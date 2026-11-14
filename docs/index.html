@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo 作品收藏夹 · Claude 生成的交互式 Web Demo</title>
+<meta name="description" content="Claude 生成的交互式 Web Demo 合集，点击卡片即可在线观看。">
+<style>
+  :root{
+    --bg:#0b0d10;
+    --panel:#14171d;
+    --panel-2:#1a1e25;
+    --line:#272c35;
+    --text:#e8ecf2;
+    --muted:#8b95a5;
+    --accent:#7aa2ff;
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, #1b2a4a 0%, transparent 60%),
+      radial-gradient(900px 500px at 90% 0%, #2a1b3f 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  header.top{
+    position:sticky;top:0;z-index:10;
+    backdrop-filter:blur(12px);
+    background:rgba(11,13,16,.72);
+    border-bottom:1px solid var(--line);
+  }
+  .top-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:650;letter-spacing:.2px}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#7aa2ff,#c084fc);box-shadow:0 0 16px rgba(122,162,255,.8)}
+  .brand small{font-weight:400;color:var(--muted);font-size:12px}
+  .top-nav{display:flex;gap:18px;font-size:14px;color:var(--muted)}
+  .top-nav a:hover{color:var(--text)}
+
+  .hero{padding:72px 0 40px}
+  .hero .kicker{
+    display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);border:1px solid rgba(122,162,255,.3);
+    background:rgba(122,162,255,.08);padding:5px 12px;border-radius:999px;margin-bottom:20px;
+  }
+  .hero h1{margin:0 0 14px;font-size:clamp(30px,4.6vw,52px);line-height:1.15;letter-spacing:-.02em}
+  .hero h1 span{
+    background:linear-gradient(100deg,#8ab4ff 0%,#c9a2ff 45%,#7ce7d5 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p{margin:0;max-width:640px;color:var(--muted);font-size:16px}
+  .stats{display:flex;gap:28px;margin-top:28px;flex-wrap:wrap}
+  .stat b{display:block;font-size:22px;letter-spacing:-.01em}
+  .stat span{font-size:12px;color:var(--muted);letter-spacing:.05em}
+
+  section.group{padding:8px 0 12px}
+  .group-head{display:flex;align-items:baseline;gap:12px;margin:0 0 18px}
+  .group-head h2{margin:0;font-size:18px;font-weight:650;letter-spacing:.01em}
+  .group-head .count{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .group-head::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:36px}
+  .card{
+    position:relative;display:flex;flex-direction:column;
+    background:linear-gradient(180deg,var(--panel-2),var(--panel));
+    border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+  }
+  .card:hover{transform:translateY(-4px);border-color:#3b4455;box-shadow:0 18px 40px -18px rgba(0,0,0,.9)}
+  .card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .thumb{
+    height:112px;display:flex;align-items:center;justify-content:center;
+    font-size:44px;font-weight:700;color:#fff;letter-spacing:.04em;
+    text-shadow:0 2px 20px rgba(0,0,0,.45);position:relative;overflow:hidden;
+  }
+  .thumb::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.22),transparent 58%)}
+  .t1{background:linear-gradient(135deg,#6d1f1f,#c2410c 55%,#7c2d12)}
+  .t2{background:linear-gradient(135deg,#134e4a,#0f766e 55%,#065f46)}
+  .t3{background:linear-gradient(135deg,#1e3a8a,#3b82f6 55%,#0ea5e9)}
+  .t4{background:linear-gradient(135deg,#0f172a,#334155 55%,#1e293b)}
+  .t5{background:linear-gradient(135deg,#14532d,#3f6212 55%,#1a2e05)}
+  .t6{background:linear-gradient(135deg,#7c2d12,#b45309 55%,#422006)}
+  .t7{background:linear-gradient(135deg,#0c4a6e,#0891b2 55%,#164e63)}
+  .card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .card-body h3{margin:0;font-size:15.5px;font-weight:640;letter-spacing:.01em}
+  .card-body p{margin:0;font-size:13px;color:var(--muted);line-height:1.55}
+  .card-foot{margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#6f7a8c}
+  .go{color:var(--accent);font-weight:600;display:inline-flex;align-items:center;gap:4px}
+  .card:hover .go{gap:8px}
+  .go{transition:gap .2s ease}
+
+  .about{
+    margin:24px 0 0;padding:26px;border:1px solid var(--line);border-radius:var(--radius);
+    background:linear-gradient(180deg,rgba(26,30,37,.9),rgba(20,23,29,.9));
+  }
+  .about h2{margin:0 0 10px;font-size:16px}
+  .about p{margin:0 0 10px;font-size:13.5px;color:var(--muted)}
+  .about p:last-child{margin-bottom:0}
+  .about strong{color:#c9d3e2;font-weight:600}
+  footer{padding:36px 0 56px;color:#5f6a7a;font-size:12.5px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  footer a{color:#8b95a5}
+  footer a:hover{color:var(--text)}
+  @media (max-width:560px){
+    .top-nav{display:none}
+    .hero{padding:48px 0 28px}
+    .thumb{height:92px;font-size:36px}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-inner">
+    <div class="brand"><span class="dot"></span>Demo 作品收藏夹 <small>· online gallery</small></div>
+    <nav class="top-nav">
+      <a href="#fable-5-2">Fable 5.2</a>
+      <a href="#fable-5-5">Fable 5.5</a>
+      <a href="#opus-5-5">Opus 5.5</a>
+      <a href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="kicker">Claude Interactive Demos</div>
+    <h1>点开一张卡片，<br><span>直接在线体验</span></h1>
+    <p>这里收录了由 Claude 不同版本生成的交互式 Web Demo。每个作品都是单文件页面，打开即可运行，无需安装任何依赖。</p>
+    <div class="stats">
+      <div class="stat"><b>7</b><span>个 Demo</span></div>
+      <div class="stat"><b>3</b><span>个模型版本</span></div>
+      <div class="stat"><b>100%</b><span>浏览器内运行</span></div>
+    </div>
+  </div>
+
+  <section class="group" id="fable-5-2">
+    <div class="group-head"><h2>Claude Fable 5.2</h2><span class="count">4 个作品</span></div>
+    <div class="grid">
+      <a class="card" href="demos/crimson-loong/">
+        <div class="thumb t1">赤</div>
+        <div class="card-body">
+          <h3>赤龍 · Crimson Loong</h3>
+          <p>暗夜中的巨龙缓缓苏醒，点击屏幕唤醒它。所有网格、贴图与音符均由代码生成。</p>
+          <div class="card-foot"><span>crimson-loong</span><span class="go">打开 →</span></div>
+        </div>
+      </a>
+      <a class="card" href="demos/painted-valley/">
+        <div class="thumb t2">山</div>
+        <div class="card-body">
+          <h3>Painted Valley · 彩绘山谷</h3>
+          <p>手绘质感的山谷漫游：WASD 行走、Shift 奔跑、V 切换第一人称、T 调整时刻。</p>
+          <div class="card-foot"><span>painted-valley</span><span class="go">打开 →</span></div>
+        </div>
+      </a>
+      <a class="card" href="demos/pelican-riding-a-bicycle/">
+        <div class="thumb t3">鹈</div>
+        <div class="card-body">
+          <h3>Pelican Riding a Bicycle · 鹈鹕的漫漫归途</h3>
+          <p>一只鹈鹕骑着自行车踏上旅途，短片式的实时渲染场景。</p>
+          <div class="card-foot"><span>pelican-riding-a-bicycle</span><span class="go">打开 →</span></div>
+        </div>
+      </a>
+      <a class="card" href="demos/saltline/">
+        <div class="thumb t4">盐</div>
+        <div class="card-body">
+          <h3>Saltline · 盐线：雨港迷航</h3>
+          <p>雨夜港口，终端逐行亮起，一段在盐雾与灯光中展开的互动叙事。</p>
+          <div class="card-foot"><span>saltline</span><span class="go">打开 →</span></div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="group" id="fable-5-5">
+    <div class="group-head"><h2>Claude Fable 5.5</h2><span class="count">1 个作品</span></div>
+    <div class="grid">
+      <a class="card" href="demos/moss-keeper/">
+        <div class="thumb t5">苔</div>
+        <div class="card-body">
+          <h3>The Moss Keeper · 苔藓守护者</h3>
+          <p>日出时分，被苔藓覆盖的远古巨人在遗忘的森林中醒来，向金色天空升起。建议开启声音。</p>
+          <div class="card-foot"><span>moss-keeper · 48 MB</span><span class="go">打开 →</span></div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="group" id="opus-5-5">
+    <div class="group-head"><h2>Claude Opus 5.5</h2><span class="count">2 个作品</span></div>
+    <div class="grid">
+      <a class="card" href="demos/pelican-pedal-tales/">
+        <div class="thumb t6">鹈</div>
+        <div class="card-body">
+          <h3>Pelican Pedal Tales · 鹈鹕骑遇记</h3>
+          <p>戴头盔、围红围巾的白鹈鹕沿海岸追鱼：IK 骨骼、布料围巾、Gerstner 海浪与昼夜循环。</p>
+          <div class="card-foot"><span>pelican-pedal-tales</span><span class="go">打开 →</span></div>
+        </div>
+      </a>
+      <a class="card" href="demos/summer-cycle/">
+        <div class="thumb t7">夏</div>
+        <div class="card-body">
+          <h3>Summer Cycle · 夏日骑行</h3>
+          <p>夏日午后的公路骑行，风景像纸卷一样在眼前缓缓展开。</p>
+          <div class="card-foot"><span>summer-cycle</span><span class="go">打开 →</span></div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <h2>About</h2>
+    <p>本仓库仅作为<strong>个人技术学习、研究与欣赏</strong>。</p>
+    <p>仓库内的所有代码与作品均来源于<strong>网络</strong>，版权均属于原作者。如果原作者认为本仓库侵犯了您的权益，请联系仓库作者，我会立刻删除相关文件。</p>
+    <p>所有 Demo 均为单文件页面，CSS、JS、图片与音频全部内联，可直接在浏览器中离线运行。</p>
+  </section>
+
+  <footer>
+    <span>Demo Gallery · 由 GitHub Pages 托管</span>
+    <a href="https://github.com/minghong-chen/Demo-Pages-Test" rel="noopener">查看源码仓库 →</a>
+  </footer>
+</main>
+
+</body>
+</html>
