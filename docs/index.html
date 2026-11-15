@@ -172,6 +172,25 @@
   @keyframes fly{0%{opacity:0;transform:translate(0,0)}20%{opacity:1}50%{transform:translate(30px,-40px)}80%{opacity:.9}100%{opacity:0;transform:translate(-20px,-80px)}}
 
 
+
+  /* ---------- 卡片区：云影 / 光斑 / 绿叶 ---------- */
+  .dapple{position:absolute;inset:0;border-radius:6px;pointer-events:none;z-index:1;mix-blend-mode:soft-light;opacity:.9;
+    background:
+      radial-gradient(38px 26px at 18% 22%,rgba(255,240,180,.95),transparent 70%),
+      radial-gradient(26px 20px at 30% 30%,rgba(255,240,180,.8),transparent 70%),
+      radial-gradient(54px 34px at 72% 18%,rgba(255,236,170,.9),transparent 70%),
+      radial-gradient(30px 22px at 64% 58%,rgba(255,240,180,.85),transparent 70%),
+      radial-gradient(44px 30px at 24% 74%,rgba(255,236,170,.8),transparent 70%),
+      radial-gradient(22px 16px at 84% 80%,rgba(255,240,180,.9),transparent 70%),
+      radial-gradient(120px 80px at 50% 45%,rgba(40,60,30,.25),transparent 75%);
+    background-size:100% 100%;animation:dapple 9s ease-in-out infinite alternate;animation-delay:var(--dd,0s)}
+  @keyframes dapple{
+    0%{transform:translate(0,0) scale(1);opacity:.75}
+    35%{transform:translate(6px,-4px) scale(1.02);opacity:1}
+    70%{transform:translate(-5px,3px) scale(.99);opacity:.8}
+    100%{transform:translate(3px,5px) scale(1.01);opacity:.95}}
+  #leaves{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:41;opacity:0;transition:opacity 1.2s}
+  #leaves.on{opacity:1}
   /* ---------- 音乐按钮 ---------- */
   .music{position:fixed;right:22px;bottom:22px;z-index:55;display:flex;align-items:center;gap:10px;
     padding:10px 16px 10px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.7);cursor:pointer;
@@ -319,6 +338,7 @@
 </footer>
 
 
+<canvas id="leaves" aria-hidden="true"></canvas>
 <button class="music" id="music" aria-label="背景音乐开关">
   <span class="bars"><i></i><i></i><i></i><i></i></span><span class="lbl">听听风</span>
   <span class="hint" id="mhint">点一下，放一段原创小曲</span>
@@ -515,6 +535,51 @@
   var pref=null; try{pref=localStorage.getItem('bgm')}catch(e){}
   if(pref==='on'){ document.addEventListener('pointerdown',function f(e){ if(!btn.contains(e.target)&&!playing) start(); document.removeEventListener('pointerdown',f); }); }
   else { setTimeout(function(){hint.classList.add('show')},3200); setTimeout(function(){hint.classList.remove('show')},9000); }
+})();
+</script>
+
+<script>
+/* 卡片区：树叶光斑、偶尔被风吹过的绿叶 */
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.card').forEach(function(c,i){
+    var d=document.createElement('i'); d.className='dapple'; d.style.setProperty('--dd',(-i*2.3)+'s');
+    d.style.backgroundPosition=(i*37%60-30)+'px '+(i*23%40-20)+'px'; c.appendChild(d);
+  });
+  var cv=document.getElementById('leaves'), cx=cv.getContext('2d');
+  var W,H,dpr=Math.min(2,devicePixelRatio||1),L=[],on=false,raf=0,t=0,nextGust=60;
+  function size(){W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);}
+  size(); addEventListener('resize',size);
+  var greens=['#6f9b4a','#86ad5c','#4f7a3a','#9cbf6a','#5d8a3e'];
+  function leaf(){
+    return {x:-40-Math.random()*120,y:Math.random()*H*.75,s:10+Math.random()*9,vx:2.2+Math.random()*2.2,vy:-.3+Math.random()*.9,
+      rot:Math.random()*6.28,vr:(Math.random()-.5)*.09,flip:Math.random()*6.28,vf:.05+Math.random()*.06,sw:Math.random()*6.28,
+      c:greens[(Math.random()*greens.length)|0]};
+  }
+  function draw(l){
+    var s=l.s; cx.save(); cx.translate(l.x,l.y); cx.rotate(l.rot); cx.scale(1,Math.cos(l.flip)*.85+.15);
+    cx.fillStyle=l.c; cx.beginPath(); cx.moveTo(-s,0);
+    cx.quadraticCurveTo(-s*.2,-s*.62,s,0); cx.quadraticCurveTo(-s*.2,s*.62,-s,0); cx.fill();
+    cx.strokeStyle='rgba(40,60,25,.45)'; cx.lineWidth=.8; cx.beginPath(); cx.moveTo(-s*1.25,0); cx.lineTo(s*.85,0); cx.stroke();
+    cx.restore();
+  }
+  function loop(){
+    t++; cx.clearRect(0,0,W,H);
+    if(t>=nextGust){ var n=2+(Math.random()*4|0); for(var k=0;k<n;k++) L.push(leaf()); nextGust=t+240+Math.random()*420; }
+    for(var i=L.length-1;i>=0;i--){
+      var l=L[i]; l.sw+=.04; l.flip+=l.vf; l.rot+=l.vr;
+      l.x+=l.vx; l.y+=l.vy+Math.sin(l.sw)*1.1; l.vx*=.9985;
+      if(l.x>W+60||l.y>H+60) L.splice(i,1); else draw(l);
+    }
+    raf=on?requestAnimationFrame(loop):0;
+  }
+  var main=document.querySelector('main');
+  new IntersectionObserver(function(es){
+    var vis=es[0].isIntersecting && es[0].intersectionRect.height>innerHeight*.35;
+    if(reduce) return;
+    if(vis&&!on){on=true;cv.classList.add('on');nextGust=t+30;if(!raf)loop();}
+    else if(!vis&&on){on=false;cv.classList.remove('on');}
+  },{threshold:[0,.1,.2,.3,.4,.5,.6]}).observe(main);
 })();
 </script>
 </body>
