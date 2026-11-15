@@ -54,9 +54,13 @@
   .nav a.gh{background:var(--ink);color:var(--paper);padding:5px 14px;border-radius:999px;font-size:13.5px;font-family:var(--sans)}
 
   /* ---------- 首屏 ---------- */
-  .hero{position:relative;height:100vh;min-height:620px;overflow:hidden;background:#2f5f9e}
+  .hero{position:relative;height:100vh;min-height:620px;overflow:hidden;background:var(--paper)}
+  /* 首图加载前用纸色盖住整个首屏，图到了再淡入 */
+  .hero::before{content:"";position:absolute;inset:0;z-index:6;background:var(--paper);pointer-events:none;transition:opacity .9s ease}
+  .hero.ready::before{opacity:0}
+  .hero:not(.ready) .hero-copy,.hero:not(.ready) .hero-copy *{animation-play-state:paused}
   .hero .layer{position:absolute;inset:-2% -1.5%;will-change:transform}
-  .hero .bg{background:url(assets/hero.webp) center 62%/cover no-repeat,url(data:image/webp;base64,UklGRlgCAABXRUJQVlA4IEwCAAAwDACdASpAABsAPrVKnkonJCKhqA6o4BaJbACdOUF+AcdtX7yF4vcNvWufqbsveDWStaDa5bmm2aAXUISzcQvMvDD2WmnyzDtCUwMAniyVbf4G5Qa6gQ5TuOwAbSowsMK6agQFUG5QDcgAAP75vTf4j3lEs1SMd/DtSe5hiawLJL4zh9WixCO56vW3YfHbZXdwdkeeolTvZKlLwuXmXc0CDea3K8bwvTKiPFUlJ83SLMvyUb5ocSBttaoZfQrPPl7NqOLLX1DkSwi73MpzneeE+Z9MQO32ND8SwpoDISEl3gbBRxhLsxFBAuuqclMDmIF5TnlM72XoKie/w4z6VguoMOT/wxM613SvQy+wYcJq48PAhuWYG2izPWxRGwEhA/tEB/JF9Mzuzo0Yy2nr1lDp21nReyyG3xfli8p79pIpLM2eh24OqwERF677wiPzlaKDkbkX2K3TixjFRDptTDDbKFz0rJQRBmU70KhqbOkZzUbkCx02ecpw5r7E+KGVIqwXxxNLtxMEUn7YNiufoQDsOYTYuczg8VAjis9pABWK8T1F5J0ApOZGJ6/LKdqPwtQdPtP115mtKcErQvXycaORqRa1wiwbWUXWjf9FCROHCS6v5n91HQAbbjXUM01c6AsDmODaq8XCZ2LlGnwSOPre58l6P20p7Y2msiLiEOEDyYgVCGdxly0SDeOJ6rQvB1mbk1yPdQ8vSy9wSAD/bYBtbsy7Q6YvGSoN5eoeMgpF85mOPwT8Nj+qVqW86rB4izrvdGKEjlNHHLp4KAA=) center 62%/cover no-repeat;image-rendering:auto;animation:breathe 26s ease-in-out infinite alternate}
+  .hero .bg{background:url(assets/hero.webp) center 62%/cover no-repeat;image-rendering:auto;animation:breathe 26s ease-in-out infinite alternate}
   @keyframes breathe{from{transform:scale(1)}to{transform:scale(1.035)}}
   /* 漂浮的云 */
   .cloud{position:absolute;opacity:.7;filter:blur(2.5px);pointer-events:none;mix-blend-mode:screen}
@@ -293,6 +297,11 @@
   </div>
   <div class="scroll-hint">往下<span></span></div>
 </header>
+<script>
+(function(){var h=document.getElementById('top'),done=0;function go(){if(!done){done=1;h.classList.add('ready')}}
+var im=new Image();im.onload=im.onerror=go;im.src='assets/hero.webp';if(im.complete)go();setTimeout(go,4000)})();
+</script>
+
 
 <main class="wrap">
   <section class="intro">
