@@ -281,6 +281,12 @@ var l=document.createElement('link');l.rel='preload';l.as='image';l.href=t==='ni
     --line:rgba(255,255,255,.1);--shadow:0 2px 0 rgba(0,0,0,.2),0 18px 40px -22px rgba(0,0,0,.8);
   }
   body{transition:background-color .6s,color .6s}
+  ::view-transition-old(root),::view-transition-new(root){animation-duration:1.4s;animation-timing-function:cubic-bezier(.45,0,.25,1)}
+  ::view-transition-old(root){animation-name:vt-out}
+  ::view-transition-new(root){animation-name:vt-in}
+  @keyframes vt-out{to{opacity:0}}
+  @keyframes vt-in{from{opacity:0}}
+  html.theming *,html.theming *::before,html.theming *::after{transition:background-color 1.2s ease,color 1.2s ease,border-color 1.2s ease,fill 1.2s ease,filter 1.2s ease,opacity 1.2s ease!important}
   html[data-theme=night] body::before{opacity:.16}
   html[data-theme=night] .nav{background:rgba(24,32,58,.72);border-color:rgba(255,255,255,.12);box-shadow:0 10px 30px -14px rgba(0,0,0,.7)}
   html[data-theme=night] .hero .bg{background-image:url(assets/hero-night.webp)}
@@ -343,7 +349,12 @@ var l=document.createElement('link');l.rel='preload';l.as='image';l.href=t==='ni
   var b=document.getElementById('theme'),root=document.documentElement;
   function set(t){
     var im=new Image(),done=0;
-    function apply(){ if(done) return; done=1; root.dataset.theme=t; try{localStorage.setItem('theme',t)}catch(e){} b.setAttribute('aria-pressed',t==='night'); }
+    function apply(){ if(done) return; done=1;
+      // 像黄昏/天亮一样慢慢溶过去：支持 View Transitions 的浏览器整页交叉淡化，其余浏览器给颜色加过渡
+      var sw=function(){ root.dataset.theme=t; };
+      if(document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(sw);
+      else { root.classList.add('theming'); sw(); setTimeout(function(){ root.classList.remove('theming'); },1300); }
+      try{localStorage.setItem('theme',t)}catch(e){} b.setAttribute('aria-pressed',t==='night'); }
     im.onload=im.onerror=apply; im.src=t==='night'?'assets/hero-night.webp':'assets/hero.webp'; if(im.complete) apply(); setTimeout(apply,2500);
   }
   b.addEventListener('click',function(){ set(root.dataset.theme==='night'?'day':'night'); });
