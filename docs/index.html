@@ -422,7 +422,7 @@
     if(reduce){ v.remove(); return; }
     v.muted=true; v.defaultMuted=true;
     v.addEventListener('playing',function(){ v.classList.add('on'); });
-    v.src='assets/hero-loop.mp4';
+    v.src='assets/hero-loop.mp4?v=2';
     function go(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
     go();
     // 微信等首次不让自动播放时，第一次触摸/点击再试
