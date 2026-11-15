@@ -3,231 +3,519 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>小&陈的 Demo 作品收藏夹 · AI 生成的交互式 Web Demo</title>
-<meta name="description" content="AI 生成的交互式 Web Demo 合集，点击卡片即可在线观看。">
+<title>小&陈的 Demo 收藏夹 · 夏日画廊</title>
+<meta name="description" content="一座手绘风格的小画廊，收藏 AI 生成的交互式 Web Demo，点开卡片即可在线体验。">
+<link rel="preload" as="image" href="assets/hero.webp">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" media="print" onload="this.media='all'">
 <style>
   :root{
-    --bg:#0b0d10;
-    --panel:#14171d;
-    --panel-2:#1a1e25;
-    --line:#272c35;
-    --text:#e8ecf2;
-    --muted:#8b95a5;
-    --accent:#7aa2ff;
-    --radius:16px;
+    --paper:#f6f0e1;
+    --paper-2:#efe6d0;
+    --ink:#3b3226;
+    --ink-soft:#6d604c;
+    --moss:#4f7a3a;
+    --leaf:#7fa65a;
+    --sky:#2f5f9e;
+    --sun:#e8a33c;
+    --roof:#c4473a;
+    --line:rgba(59,50,38,.16);
+    --shadow:0 2px 0 rgba(59,50,38,.06), 0 18px 40px -22px rgba(59,50,38,.45);
+    --hand:"LXGW WenKai","LXGW WenKai Screen","Kaiti SC","STKaiti","KaiTi","Songti SC","Noto Serif SC",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
-    margin:0;
-    background:
-      radial-gradient(1200px 600px at 15% -10%, #1b2a4a 0%, transparent 60%),
-      radial-gradient(900px 500px at 90% 0%, #2a1b3f 0%, transparent 55%),
-      var(--bg);
-    color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
+    margin:0;color:var(--ink);background:var(--paper);
+    font-family:var(--hand);line-height:1.7;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* 纸张纹理 */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.32;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .38  0 0 0 0 .28  0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 28px}
 
-  header.top{
-    position:sticky;top:0;z-index:10;
-    backdrop-filter:blur(12px);
-    background:rgba(11,13,16,.72);
-    border-bottom:1px solid var(--line);
+  /* ---------- 顶栏 ---------- */
+  .nav{
+    position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:50;
+    display:flex;align-items:center;gap:22px;padding:9px 12px 9px 20px;border-radius:999px;
+    background:rgba(246,240,225,.72);backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2);
+    border:1px solid rgba(255,255,255,.6);box-shadow:0 10px 30px -14px rgba(30,50,80,.45);
+    transition:background .4s, box-shadow .4s;
+    font-size:15px;white-space:nowrap;
   }
-  .top-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
-  .brand{display:flex;align-items:center;gap:10px;font-weight:650;letter-spacing:.2px}
-  .brand .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#7aa2ff,#c084fc);box-shadow:0 0 16px rgba(122,162,255,.8)}
-  .brand small{font-weight:400;color:var(--muted);font-size:12px}
-  .top-nav{display:flex;gap:18px;font-size:14px;color:var(--muted)}
-  .top-nav a:hover{color:var(--text)}
+  .nav .brand{font-weight:700;letter-spacing:.06em;display:flex;align-items:center;gap:8px}
+  .nav .brand i{width:9px;height:9px;border-radius:50%;background:var(--roof);box-shadow:0 0 0 3px rgba(196,71,58,.18)}
+  .nav a.l{color:var(--ink-soft);transition:color .25s}
+  .nav a.l:hover{color:var(--ink)}
+  .nav a.gh{background:var(--ink);color:var(--paper);padding:5px 14px;border-radius:999px;font-size:13.5px;font-family:var(--sans)}
 
-  .hero{padding:72px 0 40px}
-  .hero .kicker{
-    display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--accent);border:1px solid rgba(122,162,255,.3);
-    background:rgba(122,162,255,.08);padding:5px 12px;border-radius:999px;margin-bottom:20px;
-  }
-  .hero h1{margin:0 0 14px;font-size:clamp(30px,4.6vw,52px);line-height:1.15;letter-spacing:-.02em}
-  .hero h1 span{
-    background:linear-gradient(100deg,#8ab4ff 0%,#c9a2ff 45%,#7ce7d5 100%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .hero p{margin:0;max-width:640px;color:var(--muted);font-size:16px}
-  .stats{display:flex;gap:28px;margin-top:28px;flex-wrap:wrap}
-  .stat b{display:block;font-size:22px;letter-spacing:-.01em}
-  .stat span{font-size:12px;color:var(--muted);letter-spacing:.05em}
+  /* ---------- 首屏 ---------- */
+  .hero{position:relative;height:100vh;min-height:620px;overflow:hidden;background:#2f5f9e}
+  .hero .layer{position:absolute;inset:-2% -1.5%;will-change:transform}
+  .hero .bg{background:url(assets/hero.webp) center 62%/cover no-repeat;image-rendering:auto;animation:breathe 26s ease-in-out infinite alternate}
+  @keyframes breathe{from{transform:scale(1)}to{transform:scale(1.035)}}
+  /* 漂浮的云 */
+  .cloud{position:absolute;opacity:.7;filter:blur(2.5px);pointer-events:none;mix-blend-mode:screen}
+  .cloud svg{display:block;width:100%;height:auto}
+  .c1{top:9%;width:260px;animation:drift 70s linear infinite;animation-delay:-20s}
+  .c2{top:22%;width:180px;opacity:.75;animation:drift 95s linear infinite;animation-delay:-60s}
+  .c3{top:4%;width:340px;opacity:.6;animation:drift 120s linear infinite;animation-delay:-5s}
+  @keyframes drift{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}
+  /* 光斑 */
+  .sunbeam{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(60% 50% at 78% 8%,rgba(255,236,190,.38),transparent 60%),linear-gradient(90deg,rgba(20,45,90,.38),rgba(20,45,90,.12) 45%,transparent 65%);
+    animation:glow 9s ease-in-out infinite alternate}
+  @keyframes glow{from{opacity:.55}to{opacity:1}}
+  .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;
+    background:linear-gradient(to bottom,transparent,rgba(246,240,225,.0) 30%,var(--paper) 98%);pointer-events:none}
+  #petals{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
 
-  section.group{padding:8px 0 12px}
-  .group-head{display:flex;align-items:baseline;gap:12px;margin:0 0 18px}
-  .group-head h2{margin:0;font-size:18px;font-weight:650;letter-spacing:.01em}
-  .group-head .count{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 9px}
-  .group-head::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+  .hero-copy{position:absolute;z-index:4;left:0;right:0;top:20%;}
+  .hero-copy .wrap{max-width:1160px}
+  .kicker{display:inline-flex;align-items:center;gap:10px;font-size:14px;letter-spacing:.32em;color:#fff;
+    text-shadow:0 1px 8px rgba(20,40,80,.4);opacity:0;animation:rise 1s .2s ease forwards}
+  .kicker::before{content:"";width:34px;height:1px;background:rgba(255,255,255,.8)}
+  h1{margin:16px 0 18px;color:#fff;font-weight:700;font-size:clamp(40px,6.4vw,84px);line-height:1.12;letter-spacing:.04em;
+    text-shadow:0 2px 0 rgba(30,60,110,.25),0 10px 40px rgba(20,40,80,.35)}
+  h1 .ch{display:inline-block;opacity:0;transform:translateY(24px) rotate(4deg);animation:ch .9s cubic-bezier(.2,.8,.2,1) forwards}
+  @keyframes ch{to{opacity:1;transform:none}}
+  .hero-copy p{max-width:480px;margin:0;color:rgba(255,255,255,.95);font-size:18px;text-shadow:0 1px 10px rgba(20,40,80,.45);
+    opacity:0;animation:rise 1s 1.5s ease forwards}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .cta{display:inline-flex;align-items:center;gap:10px;margin-top:30px;padding:13px 26px;border-radius:999px;
+    background:var(--paper);color:var(--ink);font-size:16px;font-weight:700;letter-spacing:.08em;
+    box-shadow:0 12px 30px -10px rgba(20,40,80,.55);opacity:0;animation:rise 1s 1.8s ease forwards;transition:transform .3s, box-shadow .3s}
+  .cta:hover{transform:translateY(-3px);box-shadow:0 18px 34px -10px rgba(20,40,80,.6)}
+  .cta svg{transition:transform .3s}.cta:hover svg{transform:translateY(3px)}
 
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:36px}
+  .scroll-hint{position:absolute;z-index:4;left:50%;bottom:90px;transform:translateX(-50%);color:var(--ink-soft);font-size:13px;letter-spacing:.3em;
+    display:flex;flex-direction:column;align-items:center;gap:8px}
+  .scroll-hint span{width:1px;height:38px;background:linear-gradient(var(--ink-soft),transparent);animation:hint 2.2s ease-in-out infinite}
+  @keyframes hint{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* ---------- 小统计 ---------- */
+  .intro{position:relative;z-index:5;margin-top:-40px;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:end;padding-bottom:30px}
+  .intro h2{margin:0;font-size:clamp(26px,3vw,36px);line-height:1.35;letter-spacing:.04em}
+  .intro h2 em{font-style:normal;color:var(--moss);background:linear-gradient(transparent 62%,rgba(127,166,90,.28) 62%)}
+  .stats{display:flex;gap:30px;justify-content:flex-end}
+  .stat{text-align:center}
+  .stat b{display:block;font-size:40px;line-height:1;color:var(--sky);font-weight:700}
+  .stat small{font-size:13px;color:var(--ink-soft);letter-spacing:.14em}
+
+  /* ---------- 分组 ---------- */
+  .chapter{padding:56px 0 8px}
+  .chapter-head{display:flex;align-items:center;gap:18px;margin-bottom:26px}
+  .chapter-head .no{font-size:13px;letter-spacing:.3em;color:var(--roof);border:1.5px solid var(--roof);border-radius:999px;padding:2px 12px}
+  .chapter-head h3{margin:0;font-size:26px;letter-spacing:.06em}
+  .chapter-head .sub{color:var(--ink-soft);font-size:15px}
+  .chapter-head .vine{flex:1;height:14px;opacity:.55}
+
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:40px 44px}
+  .grid.solo .card{grid-column:1/-1;display:grid;grid-template-columns:1.25fr 1fr;gap:10px;align-items:center}
+  .grid.solo .card-body{padding:10px 26px}
+  .grid.solo .card-body h4{font-size:26px}
   .card{
-    position:relative;display:flex;flex-direction:column;
-    background:linear-gradient(180deg,var(--panel-2),var(--panel));
-    border:1px solid var(--line);border-radius:var(--radius);
-    overflow:hidden;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+    position:relative;display:flex;flex-direction:column;background:#fffaf0;border-radius:6px;padding:12px 12px 18px;
+    box-shadow:var(--shadow);border:1px solid var(--line);
+    transform:rotate(var(--r,0deg));transition:transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .5s;
   }
-  .card:hover{transform:translateY(-4px);border-color:#3b4455;box-shadow:0 18px 40px -18px rgba(0,0,0,.9)}
-  .card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  .thumb{
-    height:112px;display:flex;align-items:center;justify-content:center;
-    font-size:44px;font-weight:700;color:#fff;letter-spacing:.04em;
-    text-shadow:0 2px 20px rgba(0,0,0,.45);position:relative;overflow:hidden;
+  .card::before{ /* 胶带 */
+    content:"";position:absolute;top:-11px;left:50%;width:86px;height:24px;transform:translateX(-50%) rotate(-3deg);
+    background:rgba(232,200,130,.55);border-left:1px dashed rgba(255,255,255,.6);border-right:1px dashed rgba(255,255,255,.6);
+    box-shadow:0 1px 3px rgba(0,0,0,.08);z-index:2
   }
-  .thumb::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.22),transparent 58%)}
-  .t1{background:linear-gradient(135deg,#6d1f1f,#c2410c 55%,#7c2d12)}
-  .t2{background:linear-gradient(135deg,#134e4a,#0f766e 55%,#065f46)}
-  .t3{background:linear-gradient(135deg,#1e3a8a,#3b82f6 55%,#0ea5e9)}
-  .t4{background:linear-gradient(135deg,#0f172a,#334155 55%,#1e293b)}
-  .t5{background:linear-gradient(135deg,#14532d,#3f6212 55%,#1a2e05)}
-  .t6{background:linear-gradient(135deg,#7c2d12,#b45309 55%,#422006)}
-  .t7{background:linear-gradient(135deg,#0c4a6e,#0891b2 55%,#164e63)}
-  .t8{background:linear-gradient(135deg,#134e4a,#475569 55%,#1e1b4b)}
-  .card-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
-  .card-body h3{margin:0;font-size:15.5px;font-weight:640;letter-spacing:.01em}
-  .card-body p{margin:0;font-size:13px;color:var(--muted);line-height:1.55}
-  .card-foot{margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:#6f7a8c}
-  .go{color:var(--accent);font-weight:600;display:inline-flex;align-items:center;gap:4px}
-  .card:hover .go{gap:8px}
-  .go{transition:gap .2s ease}
+  .card:hover{transform:rotate(0deg) translateY(-8px);box-shadow:0 2px 0 rgba(59,50,38,.06),0 30px 50px -24px rgba(59,50,38,.55)}
+  .thumb{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:3px;background:var(--paper-2)}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.02);transition:transform 6s ease-out, filter .6s}
+  .card:hover .thumb img{transform:scale(1.12) translate(-1%,-1%)}
+  .thumb .tag{position:absolute;left:10px;bottom:10px;background:rgba(255,250,240,.92);color:var(--ink);font-size:12px;
+    padding:3px 10px;border-radius:999px;font-family:var(--sans);letter-spacing:.04em}
+  .thumb .play{position:absolute;right:12px;bottom:12px;width:44px;height:44px;border-radius:50%;background:var(--paper);
+    display:grid;place-items:center;box-shadow:0 6px 18px -6px rgba(0,0,0,.4);transform:scale(.6);opacity:0;transition:all .4s cubic-bezier(.2,.8,.2,1)}
+  .card:hover .thumb .play{transform:scale(1);opacity:1}
+  .card-body{padding:16px 6px 0}
+  .card-body h4{margin:0 0 6px;font-size:20px;letter-spacing:.04em;line-height:1.35}
+  .card-body h4 small{display:block;font-size:13px;color:var(--ink-soft);letter-spacing:.06em;font-weight:400;font-family:var(--sans)}
+  .card-body p{margin:0;font-size:15px;color:var(--ink-soft);line-height:1.7}
 
-  .about{
-    margin:24px 0 0;padding:26px;border:1px solid var(--line);border-radius:var(--radius);
-    background:linear-gradient(180deg,rgba(26,30,37,.9),rgba(20,23,29,.9));
+  /* 滚动出现 */
+  .reveal{opacity:0;transform:translateY(40px) rotate(var(--r,0deg));transition:opacity 1s ease, transform 1s cubic-bezier(.2,.8,.2,1)}
+  .reveal.in{opacity:1;transform:translateY(0) rotate(var(--r,0deg))}
+  .reveal.in:hover{transform:rotate(0deg) translateY(-8px)}
+
+  /* ---------- 关于 ---------- */
+  .about{margin:80px 0 0;position:relative;padding:40px 44px;background:#fffaf0;border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);
+    display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:start}
+  .about .stamp{width:96px;height:96px;border-radius:50%;border:2px solid var(--roof);color:var(--roof);display:grid;place-items:center;
+    font-size:15px;letter-spacing:.2em;transform:rotate(-12deg);text-align:center;line-height:1.3;opacity:.85}
+  .about h3{margin:0 0 10px;font-size:22px;letter-spacing:.06em}
+  .about p{margin:0 0 8px;color:var(--ink-soft);font-size:15.5px}
+  .about strong{color:var(--ink)}
+
+  /* ---------- 页脚：草地 ---------- */
+  footer{position:relative;margin-top:90px;padding:120px 0 40px;color:#f4f1e4;overflow:hidden;
+    background:linear-gradient(#6f9b4a,#4f7a3a 55%,#3e6530)}
+  footer .grass{position:absolute;left:0;right:0;top:-1px;height:120px;width:100%}
+  footer .grass path{transform-origin:bottom;animation:sway 4.5s ease-in-out infinite alternate}
+  footer .grass path:nth-child(2n){animation-duration:5.6s;animation-delay:-1.2s}
+  footer .grass path:nth-child(3n){animation-duration:3.8s;animation-delay:-2s}
+  @keyframes sway{from{transform:skewX(-4deg)}to{transform:skewX(5deg)}}
+  footer .wrap{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;position:relative}
+  footer .bye{font-size:28px;letter-spacing:.08em}
+  footer a{border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:2px}
+  footer small{display:block;opacity:.75;font-family:var(--sans);font-size:12.5px;margin-top:6px}
+  .fly{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff6b0;box-shadow:0 0 12px 4px rgba(255,240,150,.7);opacity:0;animation:fly 7s ease-in-out infinite}
+  @keyframes fly{0%{opacity:0;transform:translate(0,0)}20%{opacity:1}50%{transform:translate(30px,-40px)}80%{opacity:.9}100%{opacity:0;transform:translate(-20px,-80px)}}
+
+
+  /* ---------- 音乐按钮 ---------- */
+  .music{position:fixed;right:22px;bottom:22px;z-index:55;display:flex;align-items:center;gap:10px;
+    padding:10px 16px 10px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.7);cursor:pointer;
+    background:rgba(246,240,225,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:var(--ink);
+    font:600 14px var(--hand);letter-spacing:.08em;box-shadow:0 10px 30px -12px rgba(30,50,80,.5);transition:transform .3s, box-shadow .3s}
+  .music:hover{transform:translateY(-2px)}
+  .music .bars{display:flex;align-items:flex-end;gap:2.5px;height:16px;width:20px}
+  .music .bars i{flex:1;background:var(--moss);border-radius:2px;height:4px;transition:height .3s}
+  .music.on .bars i{animation:eq 1.1s ease-in-out infinite}
+  .music.on .bars i:nth-child(2){animation-delay:-.4s}.music.on .bars i:nth-child(3){animation-delay:-.75s}.music.on .bars i:nth-child(4){animation-delay:-.2s}
+  @keyframes eq{0%,100%{height:4px}50%{height:16px}}
+  .music .hint{position:absolute;right:0;bottom:calc(100% + 10px);white-space:nowrap;background:var(--ink);color:var(--paper);font-size:12.5px;
+    padding:5px 12px;border-radius:8px;opacity:0;transform:translateY(6px);transition:all .5s;pointer-events:none}
+  .music .hint.show{opacity:1;transform:none}
+  @media (max-width:760px){
+    .grid{grid-template-columns:1fr;gap:34px}.grid.solo .card{grid-template-columns:1fr}.grid.solo .card-body{padding:16px 6px 0}.grid.solo .card-body h4{font-size:20px}
+    .nav{gap:14px;font-size:14px}.nav a.l{display:none}
+    .hero-copy{top:22%}.hero .bg{background-position:74% 62%}
+    .intro{grid-template-columns:1fr;gap:22px;margin-top:-20px}.stats{justify-content:flex-start}
+    .about{grid-template-columns:1fr;padding:30px 24px}
+    .chapter-head{flex-wrap:wrap}.chapter-head .vine{display:none}
   }
-  .about h2{margin:0 0 10px;font-size:16px}
-  .about p{margin:0 0 10px;font-size:13.5px;color:var(--muted)}
-  .about p:last-child{margin-bottom:0}
-  .about strong{color:#c9d3e2;font-weight:600}
-  footer{padding:36px 0 56px;color:#5f6a7a;font-size:12.5px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  footer a{color:#8b95a5}
-  footer a:hover{color:var(--text)}
-  @media (max-width:560px){
-    .top-nav{display:none}
-    .hero{padding:48px 0 28px}
-    .thumb{height:92px;font-size:36px}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    h1 .ch,.kicker,.hero-copy p,.cta,.reveal{opacity:1!important;transform:none!important}
+    #petals{display:none}
   }
 </style>
 </head>
 <body>
 
-<header class="top">
-  <div class="wrap top-inner">
-    <div class="brand"><span class="dot"></span>小&陈的 Demo 作品收藏夹 <small>· online gallery</small></div>
-    <nav class="top-nav">
-      <a href="#fable-5-2">Fable 5.2</a>
-      <a href="#opus-5-5">Opus 5.5</a>
-      <a href="#deepseek-v4-1-flash">Deepseek V4.1</a>
-      <a href="#about">About</a>
-    </nav>
+<nav class="nav">
+  <span class="brand"><i></i>小&陈的收藏夹</span>
+  <a class="l" href="#ch1">Fable 5.2</a>
+  <a class="l" href="#ch2">Opus 5.5</a>
+  <a class="l" href="#ch3">Deepseek</a>
+  <a class="l" href="#about">关于</a>
+  <a class="gh" href="https://github.com/minghong-chen/Demo-Pages" rel="noopener">GitHub</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="layer bg" data-depth="0.5"></div>
+  <div class="sunbeam"></div>
+  <canvas id="petals"></canvas>
+
+  <div class="hero-copy">
+    <div class="wrap">
+      <div class="kicker">夏日 · 小画廊</div>
+      <h1 id="title">风吹过的地方，<br>藏着七个小世界</h1>
+      <p>一间收藏交互式 Web Demo 的小屋。每一张卡片都是一个单文件页面，点开就能在浏览器里走进去。</p>
+      <a class="cta" href="#ch1">去看看
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M2 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
   </div>
+  <div class="scroll-hint">往下<span></span></div>
 </header>
 
 <main class="wrap">
-  <div class="hero">
-    <div class="kicker">Claude Interactive Demos</div>
-    <h1>点开一张卡片，<br><span>直接在线体验</span></h1>
-    <p>这里收录了由不同 AI 生成的交互式 Web Demo。每个作品都是单文件页面，打开即可运行，无需安装任何依赖。</p>
+  <section class="intro">
+    <h2>由不同 AI 写出的作品，<br>收在同一片<em>夏天的草地</em>上。</h2>
     <div class="stats">
-      <div class="stat"><b>7</b><span>个 Demo</span></div>
-      <div class="stat"><b>3</b><span>个模型版本</span></div>
-      <div class="stat"><b>100%</b><span>浏览器内运行</span></div>
+      <div class="stat"><b data-count="7">0</b><small>个 Demo</small></div>
+      <div class="stat"><b data-count="3">0</b><small>个模型</small></div>
+      <div class="stat"><b data-count="100">0</b><small>% 浏览器内</small></div>
     </div>
-  </div>
+  </section>
 
-  <section class="group" id="fable-5-2">
-    <div class="group-head"><h2>Claude Fable 5.2</h2><span class="count">4 个作品</span></div>
+  <section class="chapter" id="ch1">
+    <div class="chapter-head">
+      <span class="no">第一章</span><h3>Claude Fable 5.2</h3><span class="sub">四个故事</span>
+      <svg class="vine" viewBox="0 0 400 14" preserveAspectRatio="none"><path d="M0 7 Q 25 0 50 7 T 100 7 T 150 7 T 200 7 T 250 7 T 300 7 T 350 7 T 400 7" stroke="#4f7a3a" stroke-width="1.5" fill="none"/></svg>
+    </div>
     <div class="grid">
-      <a class="card" href="demos/crimson-loong/">
-        <div class="thumb t1">赤</div>
-        <div class="card-body">
-          <h3>赤龍 · Crimson Loong</h3>
-          <p>暗夜中的巨龙缓缓苏醒，点击屏幕唤醒它。所有网格、贴图与音符均由代码生成。</p>
-          <div class="card-foot"><span>crimson-loong</span><span class="go">打开 →</span></div>
-        </div>
+      <a class="card reveal" style="--r:-1.2deg" href="demos/crimson-loong/">
+        <div class="thumb"><img src="assets/t-loong.webp" alt="云中的赤龙" loading="lazy"><span class="tag">crimson-loong</span><span class="play"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5l9 5.5-9 5.5z" fill="#3b3226"/></svg></span></div>
+        <div class="card-body"><h4>赤龍<small>Crimson Loong</small></h4><p>暗夜中的巨龙缓缓苏醒，点击屏幕唤醒它。网格、贴图与音符都由代码生成。</p></div>
       </a>
-      <a class="card" href="demos/painted-valley/">
-        <div class="thumb t2">山</div>
-        <div class="card-body">
-          <h3>Painted Valley · 彩绘山谷</h3>
-          <p>手绘质感的山谷漫游：WASD 行走、Shift 奔跑、V 切换第一人称、T 调整时刻。</p>
-          <div class="card-foot"><span>painted-valley</span><span class="go">打开 →</span></div>
-        </div>
+      <a class="card reveal" style="--r:.9deg" href="demos/painted-valley/">
+        <div class="thumb"><img src="assets/t-valley.webp" alt="手绘山谷" loading="lazy"><span class="tag">painted-valley</span><span class="play"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5l9 5.5-9 5.5z" fill="#3b3226"/></svg></span></div>
+        <div class="card-body"><h4>彩绘山谷<small>Painted Valley</small></h4><p>手绘质感的山谷漫游。WASD 行走，Shift 奔跑，V 切换第一人称，T 调整时刻。</p></div>
       </a>
-      <a class="card" href="demos/pelican-riding-a-bicycle/">
-        <div class="thumb t3">鹈</div>
-        <div class="card-body">
-          <h3>Pelican Riding a Bicycle · 鹈鹕的漫漫归途</h3>
-          <p>一只鹈鹕骑着自行车踏上旅途，短片式的实时渲染场景。</p>
-          <div class="card-foot"><span>pelican-riding-a-bicycle</span><span class="go">打开 →</span></div>
-        </div>
+      <a class="card reveal" style="--r:-.6deg" href="demos/pelican-riding-a-bicycle/">
+        <div class="thumb"><img src="assets/t-pelican.webp" alt="骑车的鹈鹕" loading="lazy"><span class="tag">pelican-riding-a-bicycle</span><span class="play"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5l9 5.5-9 5.5z" fill="#3b3226"/></svg></span></div>
+        <div class="card-body"><h4>鹈鹕的漫漫归途<small>Pelican Riding a Bicycle</small></h4><p>一只鹈鹕骑着自行车踏上旅途，像一部实时渲染的小短片。</p></div>
       </a>
-      <a class="card" href="demos/saltline/">
-        <div class="thumb t4">盐</div>
-        <div class="card-body">
-          <h3>Saltline · 盐线：雨港迷航</h3>
-          <p>雨夜港口，终端逐行亮起，一段在盐雾与灯光中展开的互动叙事。</p>
-          <div class="card-foot"><span>saltline</span><span class="go">打开 →</span></div>
-        </div>
+      <a class="card reveal" style="--r:1.3deg" href="demos/saltline/">
+        <div class="thumb"><img src="assets/t-saltline.webp" alt="雨夜港口" loading="lazy"><span class="tag">saltline</span><span class="play"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5l9 5.5-9 5.5z" fill="#3b3226"/></svg></span></div>
+        <div class="card-body"><h4>盐线：雨港迷航<small>Saltline</small></h4><p>雨夜港口，终端逐行亮起，一段在盐雾与灯光中展开的互动叙事。</p></div>
       </a>
     </div>
   </section>
 
-  <section class="group" id="opus-5-5">
-    <div class="group-head"><h2>Claude Opus 5.5</h2><span class="count">2 个作品</span></div>
+  <section class="chapter" id="ch2">
+    <div class="chapter-head">
+      <span class="no">第二章</span><h3>Claude Opus 5.5</h3><span class="sub">两段骑行</span>
+      <svg class="vine" viewBox="0 0 400 14" preserveAspectRatio="none"><path d="M0 7 Q 25 0 50 7 T 100 7 T 150 7 T 200 7 T 250 7 T 300 7 T 350 7 T 400 7" stroke="#4f7a3a" stroke-width="1.5" fill="none"/></svg>
+    </div>
     <div class="grid">
-      <a class="card" href="demos/pelican-pedal-tales/">
-        <div class="thumb t6">鹈</div>
-        <div class="card-body">
-          <h3>Pelican Pedal Tales · 鹈鹕骑遇记</h3>
-          <p>戴头盔、围红围巾的白鹈鹕沿海岸追鱼：IK 骨骼、布料围巾、Gerstner 海浪与昼夜循环。</p>
-          <div class="card-foot"><span>pelican-pedal-tales</span><span class="go">打开 →</span></div>
-        </div>
+      <a class="card reveal" style="--r:1deg" href="demos/pelican-pedal-tales/">
+        <div class="thumb"><img src="assets/t-pedal.webp" alt="海边骑车的鹈鹕" loading="lazy"><span class="tag">pelican-pedal-tales</span><span class="play"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5l9 5.5-9 5.5z" fill="#3b3226"/></svg></span></div>
+        <div class="card-body"><h4>鹈鹕骑遇记<small>Pelican Pedal Tales</small></h4><p>戴头盔、围红围巾的白鹈鹕沿海岸追鱼：IK 骨骼、布料围巾、Gerstner 海浪与昼夜循环。</p></div>
       </a>
-      <a class="card" href="demos/summer-cycle/">
-        <div class="thumb t7">夏</div>
-        <div class="card-body">
-          <h3>Summer Cycle · 夏日骑行</h3>
-          <p>夏日午后的公路骑行，风景像纸卷一样在眼前缓缓展开。</p>
-          <div class="card-foot"><span>summer-cycle</span><span class="go">打开 →</span></div>
-        </div>
+      <a class="card reveal" style="--r:-1deg" href="demos/summer-cycle/">
+        <div class="thumb"><img src="assets/t-summer.webp" alt="夏日乡间小路" loading="lazy"><span class="tag">summer-cycle</span><span class="play"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5l9 5.5-9 5.5z" fill="#3b3226"/></svg></span></div>
+        <div class="card-body"><h4>夏日骑行<small>Summer Cycle</small></h4><p>夏日午后的公路骑行，风景像纸卷一样在眼前缓缓展开。</p></div>
       </a>
     </div>
   </section>
 
-  <section class="group" id="deepseek-v4-1-flash">
-    <div class="group-head"><h2>Deepseek V4.1 Flash</h2><span class="count">1 个作品</span></div>
-    <div class="grid">
-      <a class="card" href="demos/wind-bell-bay/">
-        <div class="thumb t8">湾</div>
-        <div class="card-body">
-          <h3>Wind Bell Bay · 风铃湾</h3>
-          <p>一座漂在云端的 3D 箱庭小镇：昼夜流转，火车环岛，风车与飞鸟。</p>
-          <div class="card-foot"><span>wind-bell-bay</span><span class="go">打开 →</span></div>
-        </div>
+  <section class="chapter" id="ch3">
+    <div class="chapter-head">
+      <span class="no">第三章</span><h3>Deepseek V4.1 Flash</h3><span class="sub">一座云上小镇</span>
+      <svg class="vine" viewBox="0 0 400 14" preserveAspectRatio="none"><path d="M0 7 Q 25 0 50 7 T 100 7 T 150 7 T 200 7 T 250 7 T 300 7 T 350 7 T 400 7" stroke="#4f7a3a" stroke-width="1.5" fill="none"/></svg>
+    </div>
+    <div class="grid solo">
+      <a class="card reveal" style="--r:-.5deg" href="demos/wind-bell-bay/">
+        <div class="thumb"><img src="assets/t-windbell.webp" alt="云端小镇" loading="lazy"><span class="tag">wind-bell-bay</span><span class="play"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5l9 5.5-9 5.5z" fill="#3b3226"/></svg></span></div>
+        <div class="card-body"><h4>风铃湾<small>Wind Bell Bay</small></h4><p>一座漂在云端的 3D 箱庭小镇：昼夜流转，火车环岛，风车与飞鸟。</p></div>
       </a>
     </div>
   </section>
 
-  <section class="about" id="about">
-    <h2>About</h2>
-    <p>本仓库仅作为<strong>个人技术学习、研究与欣赏</strong>。</p>
-    <p>仓库内的所有代码与作品均来源于<strong>网络</strong>，版权均属于原作者。如果原作者认为本仓库侵犯了您的权益，请联系仓库作者，我会立刻删除相关文件。</p>
-    <p>所有 Demo 均为单文件页面，CSS、JS、图片与音频全部内联，可直接在浏览器中离线运行。</p>
+  <section class="about reveal" id="about">
+    <div class="stamp">学习<br>收藏</div>
+    <div>
+      <h3>关于这间小屋</h3>
+      <p>本仓库仅作<strong>个人技术学习、研究与欣赏</strong>之用。</p>
+      <p>仓库内的代码与作品均来源于<strong>网络</strong>，版权归原作者所有。如原作者认为本仓库侵犯了您的权益，请联系仓库作者，我会立刻删除相关文件。</p>
+      <p>所有 Demo 都是单文件页面，CSS、JS、图片与音频全部内联，可直接在浏览器中离线运行。</p>
+    </div>
   </section>
-
-  <footer>
-    <span>Demo Gallery · 由 GitHub Pages 托管</span>
-    <a href="https://github.com/minghong-chen/Demo-Pages" rel="noopener">查看源码仓库 →</a>
-  </footer>
 </main>
 
+<footer>
+  <svg class="grass" viewBox="0 0 1200 120" preserveAspectRatio="none" aria-hidden="true">
+    <rect width="1200" height="120" style="fill:var(--paper)"/>
+    <path fill="#86ad5c" d="M0 120 L0 70 Q40 30 60 80 Q80 20 110 75 Q140 35 170 82 Q200 25 230 78 Q260 40 290 80 Q320 22 350 76 Q380 38 410 82 Q440 28 470 78 Q500 42 530 80 Q560 24 590 76 Q620 36 650 82 Q680 26 710 78 Q740 44 770 80 Q800 22 830 76 Q860 38 890 82 Q920 30 950 78 Q980 42 1010 80 Q1040 24 1070 76 Q1100 36 1130 82 Q1160 30 1200 72 L1200 120Z"/>
+    <path fill="#6f9b4a" d="M0 120 L0 90 Q30 55 55 95 Q85 50 115 92 Q145 58 175 96 Q205 48 235 92 Q265 60 295 96 Q325 50 355 92 Q385 62 415 96 Q445 52 475 92 Q505 60 535 96 Q565 48 595 92 Q625 58 655 96 Q685 50 715 92 Q745 62 775 96 Q805 52 835 92 Q865 60 895 96 Q925 48 955 92 Q985 58 1015 96 Q1045 50 1075 92 Q1105 62 1135 96 Q1165 54 1200 90 L1200 120Z"/>
+  </svg>
+  <div class="wrap">
+    <div><div class="bye">下次再来坐坐。</div><small>Demo Gallery · 由 GitHub Pages 托管</small></div>
+    <a href="https://github.com/minghong-chen/Demo-Pages" rel="noopener">查看源码仓库 →</a>
+  </div>
+</footer>
+
+
+<button class="music" id="music" aria-label="背景音乐开关">
+  <span class="bars"><i></i><i></i><i></i><i></i></span><span class="lbl">听听风</span>
+  <span class="hint" id="mhint">点一下，放一段原创小曲</span>
+</button>
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 标题逐字出现
+  var t = document.getElementById('title'), html = '', d = 0.45;
+  t.innerHTML.split(/(<br>)/).forEach(function(part){
+    if(part === '<br>'){ html += '<br>'; return; }
+    Array.from(part).forEach(function(c){
+      html += '<span class="ch" style="animation-delay:'+d.toFixed(2)+'s">'+c+'</span>'; d += 0.06;
+    });
+  });
+  t.innerHTML = html;
+
+  // 首屏视差（滚动 + 鼠标）
+  var layers = document.querySelectorAll('.hero .layer'), mx = 0, my = 0, sy = 0;
+  function para(){
+    layers.forEach(function(l){
+      var k = parseFloat(l.dataset.depth);
+      l.style.translate = (mx*k*12)+'px '+(my*k*8 + sy*k*0.25)+'px';
+    });
+  }
+  if(!reduce){
+    addEventListener('mousemove', function(e){ mx = e.clientX/innerWidth-.5; my = e.clientY/innerHeight-.5; requestAnimationFrame(para); });
+    addEventListener('scroll', function(){ sy = scrollY; if(sy < innerHeight*1.2) requestAnimationFrame(para); }, {passive:true});
+  }
+
+  // 滚动出现 + 数字滚动
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      e.target.classList.add('in'); io.unobserve(e.target);
+    });
+  }, {threshold:.15, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(function(el,i){ el.style.transitionDelay = (i%3*0.12)+'s'; io.observe(el); });
+
+  var counted = false, statIO = new IntersectionObserver(function(es){
+    if(!es[0].isIntersecting || counted) return; counted = true;
+    document.querySelectorAll('[data-count]').forEach(function(b){
+      var end = +b.dataset.count, t0 = performance.now();
+      (function step(now){
+        var p = Math.min(1,(now-t0)/1400), v = Math.round(end*(1-Math.pow(1-p,3)));
+        b.textContent = v; if(p<1) requestAnimationFrame(step);
+      })(t0);
+    });
+  }, {threshold:.6});
+  statIO.observe(document.querySelector('.stats'));
+
+  // 页脚萤火
+  var f = document.querySelector('footer');
+  for(var i=0;i<14;i++){
+    var s = document.createElement('i'); s.className = 'fly';
+    s.style.left = (Math.random()*100)+'%'; s.style.top = (40+Math.random()*50)+'%';
+    s.style.animationDelay = (-Math.random()*7)+'s'; s.style.animationDuration = (5+Math.random()*5)+'s';
+    f.appendChild(s);
+  }
+
+  // 被风吹起的花瓣与草籽
+  if(reduce) return;
+  var cv = document.getElementById('petals'), cx = cv.getContext('2d'), W, H, dpr = Math.min(2, devicePixelRatio||1), P = [];
+  function size(){ W = cv.clientWidth; H = cv.clientHeight; cv.width = W*dpr; cv.height = H*dpr; cx.setTransform(dpr,0,0,dpr,0,0); }
+  size(); addEventListener('resize', size);
+  var colors = ['#fff8e8','#ffe2d6','#f7c8bd','#fff','#f3e6a8'];
+  function mk(init){
+    return {
+      x: init ? Math.random()*W : -20 - Math.random()*W*.3,
+      y: Math.random()*H*0.9,
+      s: 3 + Math.random()*5,
+      vx: .5 + Math.random()*1.3,
+      vy: -.15 + Math.random()*.4,
+      a: Math.random()*6.28, va: (Math.random()-.5)*.06,
+      w: Math.random()*6.28,
+      c: colors[(Math.random()*colors.length)|0],
+      seed: Math.random() < .3
+    };
+  }
+  var N = W < 700 ? 26 : 48;
+  for(var j=0;j<N;j++) P.push(mk(true));
+  var gust = 0, tick = 0, visible = true;
+  new IntersectionObserver(function(es){ visible = es[0].isIntersecting; if(visible) loop(); }).observe(cv);
+  function loop(){
+    if(!visible) return;
+    tick++; gust = Math.sin(tick/240)*.8 + Math.sin(tick/77)*.3;
+    cx.clearRect(0,0,W,H);
+    P.forEach(function(p,i){
+      p.w += .03; p.a += p.va;
+      p.x += p.vx + gust + Math.cos(p.w)*.4;
+      p.y += p.vy + Math.sin(p.w)*.5;
+      if(p.x > W+30 || p.y > H+30 || p.y < -30) P[i] = mk(false);
+      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.a);
+      if(p.seed){ // 蒲公英种子
+        cx.strokeStyle = 'rgba(255,255,255,.85)'; cx.lineWidth = .8;
+        cx.beginPath(); cx.moveTo(0,0); cx.lineTo(0,p.s*1.6); cx.stroke();
+        for(var k=0;k<7;k++){ var an = -Math.PI/2 + (k-3)*.32; cx.beginPath(); cx.moveTo(0,0); cx.lineTo(Math.cos(an)*p.s, Math.sin(an)*p.s); cx.stroke(); }
+      } else { // 花瓣
+        cx.fillStyle = p.c; cx.globalAlpha = .9;
+        cx.beginPath(); cx.ellipse(0,0,p.s,p.s*.55*Math.abs(Math.cos(p.w*1.3))+.6,0,0,6.28); cx.fill();
+      }
+      cx.restore();
+    });
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+</script>
+
+<script>
+/* 背景音乐：Web Audio 实时合成的原创钢琴小曲 + 风声，无外部音频文件 */
+(function(){
+  var btn=document.getElementById('music'), lbl=btn.querySelector('.lbl'), hint=document.getElementById('mhint');
+  var ctx, master, rev, playing=false, timer, nextT=0, step=0, windSrc, windGain;
+  var BPM=74, BEAT=60/BPM, BARS=8;
+  var chords=[[46,53,57,62],[48,55,60,64],[45,52,55,60],[50,57,60,65],[46,53,57,62],[48,55,60,64],[43,50,53,58],[48,55,60,65]];
+  var mel=[
+    [[69,0,1.5],[72,1.5,.5],[77,2,2]],
+    [[76,0,1],[74,1,1],[72,2,1],[67,3,1]],
+    [[69,0,1.5],[72,1.5,.5],[76,2,1],[79,3,1]],
+    [[77,0,3],[76,3,.5],[74,3.5,.5]],
+    [[74,0,1.5],[72,1.5,.5],[74,2,1],[77,3,1]],
+    [[79,0,1.5],[77,1.5,.5],[76,2,1],[72,3,1]],
+    [[74,0,1],[77,1,1],[81,2,1.5],[79,3.5,.5]],
+    [[77,0,2],[76,2,2]]
+  ];
+  var arp=[0,1,2,3,2,1,2,1];
+  function hz(m){return 440*Math.pow(2,(m-69)/12)}
+  function impulse(sec){
+    var r=ctx.sampleRate,len=r*sec,b=ctx.createBuffer(2,len,r);
+    for(var c=0;c<2;c++){var d=b.getChannelData(c);for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6);}
+    return b;
+  }
+  function piano(m,t,dur,vel){
+    var g=ctx.createGain(), f=ctx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=Math.min(5200,hz(m)*6); f.Q.value=.3;
+    [[1,'triangle',1],[2,'sine',.35],[1.003,'sine',.5]].forEach(function(o){
+      var osc=ctx.createOscillator(),og=ctx.createGain(); osc.type=o[1]; osc.frequency.value=hz(m)*o[0]; og.gain.value=o[2];
+      osc.connect(og); og.connect(f); osc.start(t); osc.stop(t+dur+2.5);
+    });
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vel,t+.008);
+    g.gain.exponentialRampToValueAtTime(vel*.35,t+.35); g.gain.exponentialRampToValueAtTime(.0005,t+dur+2.2);
+    f.connect(g); g.connect(master); g.connect(rev);
+  }
+  function pad(notes,t,dur){
+    notes.forEach(function(m){
+      var o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();
+      o.type='sawtooth'; o.frequency.value=hz(m+12); o.detune.value=(Math.random()-.5)*10; f.type='lowpass'; f.frequency.value=900;
+      g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.012,t+dur*.4); g.gain.linearRampToValueAtTime(0,t+dur+.4);
+      o.connect(f); f.connect(g); g.connect(rev); o.start(t); o.stop(t+dur+.5);
+    });
+  }
+  function bar(i,t){
+    var c=chords[i%BARS], loop=Math.floor(i/BARS);
+    for(var k=0;k<8;k++) piano(c[arp[k]],t+k*BEAT/2,BEAT*.9,k==0?.16:.09);
+    pad(c,t,BEAT*4);
+    if(loop%3!=2){ // 每三遍留一遍只有伴奏，听着更松
+      mel[i%BARS].forEach(function(n){ piano(n[0]+(loop%3==1?12:0)*(i%BARS>3?1:0),t+n[1]*BEAT+(Math.random()*.012),n[2]*BEAT,.2); });
+    }
+  }
+  function sched(){
+    while(nextT<ctx.currentTime+1.2){ bar(step,nextT); nextT+=BEAT*4; step++; }
+  }
+  function wind(){
+    var len=ctx.sampleRate*4,b=ctx.createBuffer(1,len,ctx.sampleRate),d=b.getChannelData(0),last=0;
+    for(var i=0;i<len;i++){last=(last+.02*(Math.random()*2-1))/1.02;d[i]=last*3.5;}
+    windSrc=ctx.createBufferSource(); windSrc.buffer=b; windSrc.loop=true;
+    var f=ctx.createBiquadFilter(); f.type='bandpass'; f.frequency.value=500; f.Q.value=.6;
+    var lfo=ctx.createOscillator(),lg=ctx.createGain(); lfo.frequency.value=.07; lg.gain.value=300; lfo.connect(lg); lg.connect(f.frequency); lfo.start();
+    windGain=ctx.createGain(); windGain.gain.value=.05;
+    var l2=ctx.createOscillator(),l2g=ctx.createGain(); l2.frequency.value=.11; l2g.gain.value=.03; l2.connect(l2g); l2g.connect(windGain.gain); l2.start();
+    windSrc.connect(f); f.connect(windGain); windGain.connect(master); windSrc.start();
+  }
+  function start(){
+    if(!ctx){
+      ctx=new (window.AudioContext||window.webkitAudioContext)();
+      master=ctx.createGain(); master.gain.value=0; var comp=ctx.createDynamicsCompressor(); comp.threshold.value=-14; comp.ratio.value=4; master.connect(comp); comp.connect(ctx.destination);
+      rev=ctx.createConvolver(); rev.buffer=impulse(3.2); var rg=ctx.createGain(); rg.gain.value=.55; rev.connect(rg); rg.connect(master);
+      wind();
+    }
+    ctx.resume(); nextT=ctx.currentTime+.15;
+    master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(.55,ctx.currentTime,1.2);
+    sched(); timer=setInterval(sched,300); playing=true; btn.classList.add('on'); lbl.textContent='风在唱';
+    try{localStorage.setItem('bgm','on')}catch(e){}
+  }
+  function stop(){
+    clearInterval(timer); playing=false; btn.classList.remove('on'); lbl.textContent='听听风';
+    master.gain.cancelScheduledValues(ctx.currentTime); master.gain.setTargetAtTime(0,ctx.currentTime,.4);
+    try{localStorage.setItem('bgm','off')}catch(e){}
+  }
+  btn.addEventListener('click',function(){ hint.classList.remove('show'); playing?stop():start(); });
+  document.addEventListener('visibilitychange',function(){ if(!ctx) return; if(document.hidden) ctx.suspend(); else if(playing) ctx.resume(); });
+  // 浏览器不允许自动播放：曾经开过的人，第一次点击页面任意处就续上；没开过的给个提示
+  var pref=null; try{pref=localStorage.getItem('bgm')}catch(e){}
+  if(pref==='on'){ document.addEventListener('pointerdown',function f(e){ if(!btn.contains(e.target)&&!playing) start(); document.removeEventListener('pointerdown',f); }); }
+  else { setTimeout(function(){hint.classList.add('show')},3200); setTimeout(function(){hint.classList.remove('show')},9000); }
+})();
+</script>
 </body>
 </html>
