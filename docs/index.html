@@ -501,8 +501,8 @@ var im=new Image();im.onload=im.onerror=go;im.src='assets/hero.webp';if(im.compl
   var R = [], F = [], FL = [], fwCols = ['#ff4d5e','#ff9f1c','#ffd60a','#2ea8ff','#ff5fa8','#5fd35f','#a66bff'];
   document.getElementById('top').addEventListener('pointerdown', function(e){
     if(e.target.closest('a,button')) return;
-    var q = local(e), sy0 = Math.min(H, q.y + 160 + Math.random()*80);
-    R.push({x:q.x + (Math.random()-.5)*30, y:sy0, tx:q.x, ty:q.y, t:0, n:22 + ((sy0-q.y)/6|0)});
+    var q = local(e), sy0 = H - 10;
+    R.push({x:q.x + (Math.random()-.5)*60, y:sy0, tx:q.x, ty:q.y, t:0, n:Math.max(28, Math.min(60, (sy0-q.y)/11|0)), lx:null, ly:null});
     if(R.length > 6) R.shift();
   });
   function burst(x,y){
@@ -528,9 +528,16 @@ var im=new Image();im.onload=im.onerror=go;im.src='assets/hero.webp';if(im.compl
     for(var ri=R.length-1; ri>=0; ri--){
       var r = R[ri], k = ++r.t/r.n, e2 = 1-Math.pow(1-k,2);
       var ox = r.x + (r.tx-r.x)*e2, oy = r.y + (r.ty-r.y)*e2;
-      cx.shadowColor = '#ffb347'; cx.strokeStyle = 'rgba(255,200,120,.95)'; cx.lineWidth = 3;
-      cx.beginPath(); cx.moveTo(ox, oy+22); cx.lineTo(ox, oy); cx.stroke();
-      cx.fillStyle = '#fff'; cx.beginPath(); cx.arc(ox, oy, 2.5, 0, 6.28); cx.fill();
+      // 火箭：拖着金色尾焰和火星往上窜
+      var dxr = ox - (r.lx==null ? ox : r.lx), dyr = oy - (r.ly==null ? oy+8 : r.ly), mr = Math.hypot(dxr,dyr)||1;
+      var tx2 = ox - dxr/mr*60, ty2 = oy - dyr/mr*60;
+      var tg = cx.createLinearGradient(ox,oy,tx2,ty2);
+      tg.addColorStop(0,'rgba(255,240,200,1)'); tg.addColorStop(.3,'rgba(255,170,60,.9)'); tg.addColorStop(1,'rgba(255,120,40,0)');
+      cx.shadowColor = '#ff9a2e'; cx.shadowBlur = 16; cx.strokeStyle = tg; cx.lineWidth = 4;
+      cx.beginPath(); cx.moveTo(tx2,ty2); cx.lineTo(ox,oy); cx.stroke();
+      cx.fillStyle = '#fff'; cx.beginPath(); cx.arc(ox, oy, 3.5, 0, 6.28); cx.fill();
+      for(var sp=0; sp<2; sp++) F.push({x:ox, y:oy+4, px:ox, py:oy+4, vx:(Math.random()-.5)*1.4, vy:1+Math.random()*1.5, life:0, max:18+Math.random()*14, c:'#ffb52e', tw:true});
+      r.lx = ox; r.ly = oy;
       if(k >= 1){ burst(r.tx, r.ty); R.splice(ri,1); }
     }
     for(var fi=F.length-1; fi>=0; fi--){
