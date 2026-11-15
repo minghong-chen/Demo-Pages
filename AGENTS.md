@@ -3,6 +3,14 @@
 这是「小&陈的 Demo 收藏夹 · 夏日画廊」的网站仓库，GitHub Pages 从 `docs/` 发布：
 <https://minghong-chen.github.io/Demo-Pages/>
 
+## 相关地址
+
+| 用途 | 地址 | AI 权限 |
+| --- | --- | --- |
+| 案例源仓库 Demo（克隆下来读取） | <https://github.com/minghong-chen/Demo>（克隆：`https://github.com/minghong-chen/Demo.git`） | **只读** |
+| 本网站仓库 Demo-Pages | <https://github.com/minghong-chen/Demo-Pages> | 可修改 |
+| 线上网站 | <https://minghong-chen.github.io/Demo-Pages/> | — |
+
 ## 最重要的一条：源仓库只读
 
 所有案例都来自维护者自己的 **Demo 仓库**：<https://github.com/minghong-chen/Demo>
