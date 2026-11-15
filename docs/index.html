@@ -542,8 +542,8 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
     var c1 = fwCols[(Math.random()*fwCols.length)|0], c2 = fwCols[(Math.random()*fwCols.length)|0], n = 64;
     FL.push({x:x, y:y, life:0, c:c1});
     for(var k=0;k<n;k++){
-      var an = k/n*6.28 + Math.random()*.1, v = 1.9 + Math.random()*2.3;
-      F.push({x:x, y:y, px:x, py:y, vx:Math.cos(an)*v, vy:Math.sin(an)*v, life:0, max:95+Math.random()*50, c:k%3 ? c1 : c2, tw:Math.random()<.35});
+      var an = k/n*6.28 + Math.random()*.1, v = 1.3 + Math.random()*1.5;
+      F.push({x:x, y:y, px:x, py:y, vx:Math.cos(an)*v, vy:Math.sin(an)*v, life:0, max:140+Math.random()*60, c:k%3 ? c1 : c2, tw:Math.random()<.35});
     }
     if(F.length > 600) F.splice(0, F.length-600);
   }
@@ -551,7 +551,7 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
     if(!R.length && !F.length && !FL.length) return;
     cx.save(); cx.lineCap = 'round'; cx.globalCompositeOperation = 'lighter';
     for(var li=FL.length-1; li>=0; li--){ // 炸开瞬间的一团光
-      var fl = FL[li], kk = ++fl.life/30; if(kk >= 1){ FL.splice(li,1); continue; }
+      var fl = FL[li], kk = ++fl.life/40; if(kk >= 1){ FL.splice(li,1); continue; }
       var gr = cx.createRadialGradient(fl.x,fl.y,0,fl.x,fl.y,40+kk*90);
       gr.addColorStop(0,'rgba(255,255,255,'+(.9*(1-kk)).toFixed(3)+')'); gr.addColorStop(.35,fl.c); gr.addColorStop(1,'rgba(255,255,255,0)');
       cx.globalAlpha = .55*(1-kk); cx.fillStyle = gr; cx.beginPath(); cx.arc(fl.x,fl.y,40+kk*90,0,6.28); cx.fill();
@@ -575,7 +575,7 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
     for(var fi=F.length-1; fi>=0; fi--){
       var f = F[fi]; f.life++;
       if(f.life > f.max){ F.splice(fi,1); continue; }
-      f.px = f.x; f.py = f.y; f.vx *= .975; f.vy = f.vy*.975 + .022; f.x += f.vx + gust*.3; f.y += f.vy;
+      f.px = f.x; f.py = f.y; f.vx *= .982; f.vy = f.vy*.982 + .012; f.x += f.vx + gust*.3; f.y += f.vy;
       var al = 1 - f.life/f.max; if(f.tw && f.life > f.max*.5) al *= (Math.random() < .5 ? .2 : 1);
       cx.globalAlpha = al; cx.strokeStyle = f.c; cx.lineWidth = 3.5*al + 1;
       cx.beginPath(); cx.moveTo(f.px - f.vx*3, f.py - f.vy*3); cx.lineTo(f.x, f.y); cx.stroke();
@@ -585,7 +585,7 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
   }
   function launch(){
     var tx = W*(.12 + Math.random()*.76), ty = H*(.1 + Math.random()*.32), sy0 = H - 10;
-    R.push({x:tx + (Math.random()-.5)*60, y:sy0, tx:tx, ty:ty, t:0, n:Math.max(50, Math.min(100, (sy0-ty)/6|0)), lx:null, ly:null});
+    R.push({x:tx + (Math.random()-.5)*60, y:sy0, tx:tx, ty:ty, t:0, n:Math.max(75, Math.min(140, (sy0-ty)/4|0)), lx:null, ly:null});
   }
   var nextFW = 40;
   // 夜里的萤火虫：数量少，匀速慢慢飘，在草丛上方一明一灭
@@ -645,8 +645,12 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
     if(P.length > N+40) P.splice(0, P.length-N-40);
   });
   new IntersectionObserver(function(es){ visible = es[0].isIntersecting; if(visible) loop(); }).observe(cv);
-  function loop(){
+  var lastT = 0;
+  function loop(now){
     if(!visible) return;
+    // 高刷屏（120/144Hz）也按 60 帧走，速度一致、更省电
+    if(now && now - lastT < 15){ requestAnimationFrame(loop); return; }
+    lastT = now || 0;
     tick++; gust = Math.sin(tick/240)*.8 + Math.sin(tick/77)*.3;
     cx.clearRect(0,0,W,H);
     var spd = Math.hypot(ptr.vx, ptr.vy), live = ptr.on && tick-ptr.t < 6;
@@ -696,7 +700,7 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
       cx.restore();
     });
     if(document.documentElement.dataset.theme === 'night'){
-      if(--nextFW <= 0){ launch(); if(Math.random() < .3) setTimeout(launch, 260); nextFW = 100 + Math.random()*120; }
+      if(--nextFW <= 0){ launch(); if(Math.random() < .3) setTimeout(launch, 260); nextFW = 130 + Math.random()*130; }
     } else { R.length = 0; }
     drawFW();
     requestAnimationFrame(loop);
