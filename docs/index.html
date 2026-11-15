@@ -30,7 +30,8 @@ var l=document.createElement('link');l.rel='preload';l.as='image';l.href=t==='ni
     --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;overflow-x:hidden}
+  body{overflow-x:clip}
   body{
     margin:0;color:var(--ink);background:var(--paper);
     font-family:var(--hand);line-height:1.7;-webkit-font-smoothing:antialiased;
@@ -260,7 +261,7 @@ var l=document.createElement('link');l.rel='preload';l.as='image';l.href=t==='ni
     padding:5px 12px;border-radius:8px;opacity:0;transform:translateY(6px);transition:all .5s;pointer-events:none}
   .music .hint.show{opacity:1;transform:none}
   @media (max-width:760px){
-    .grid{grid-template-columns:1fr;gap:34px}.dafeiyu{width:84px;right:10px;bottom:calc(100% - 34px)}.dafeiyu .bubble{right:auto;left:-6px;top:-30px;font-size:12px}.dafeiyu .bubble::after{display:none}.dafeiyu .poke{font-size:11px;padding:2px 8px}.grid.solo .card{grid-template-columns:1fr}.grid.solo .card-body{padding:16px 6px 0}.grid.solo .card-body h4{font-size:20px}
+    .grid{grid-template-columns:1fr;gap:34px}.dafeiyu{width:84px;right:10px;bottom:calc(100% - 34px)}.dafeiyu .bubble{right:-4px;left:auto;top:-30px;font-size:12px}.dafeiyu .bubble::after{display:none}.dafeiyu .poke{font-size:11px;padding:2px 8px}.grid.solo .card{grid-template-columns:1fr}.grid.solo .card-body{padding:16px 6px 0}.grid.solo .card-body h4{font-size:20px}
     .nav{gap:14px;font-size:14px}.nav a.l{display:none}
     .hero-copy{top:22%}.hero .bg{background-position:74% 62%}
     .intro{grid-template-columns:1fr;gap:22px;margin-top:-20px}.stats{justify-content:flex-start}
