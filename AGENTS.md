@@ -70,7 +70,7 @@ Demo 仓库里**一个文件夹 = 一个模型 = 网站上的一章**，文件�
 
 ## 不要动的东西（维护者已经定下的）
 
-- **首屏**：保持高清静态图 `docs/assets/hero.webp`。WebGL 扭曲“动起来”和 AI 图生视频动态壁纸都试过，被否决（太假 / 太糊）。
+- **首屏**：白天用高清静态图 `docs/assets/hero.webp`，黑夜用同构图的夜景 `docs/assets/hero-night.webp`（导航栏按钮切换，夜里首屏自动放烟火、花瓣变萤火虫；点击放烟火在白天试过被否决）。WebGL 扭曲“动起来”和 AI 图生视频动态壁纸都试过，被否决（太假 / 太糊）。
 - **页脚**：只写“Demo Gallery · 由 GitHub Pages 托管”，不放署名；致谢统一写在 `README.md`。
 - **舞狮大肥鱼（第三章彩蛋）**：素材来自 [PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet)（MIT），必须保留 `docs/assets/dafeiyu-wushi.LICENSE.txt` 和 README 致谢。桌面用透明 webm，手机 / 微信用动图 webp（微信不支持透明 webm）。**不要懒加载、不要再压缩**。头顶有“点我 ✨”提示，点过后用 localStorage 记住不再显示。
 - **点击音效**：`docs/assets/ciallo.mp3`，柚子社《千恋万花》芳乃的“Ciallo～”原声，已剪成只剩一声（约 0.9 秒）。不要换成合成音，不要再加别的音效。

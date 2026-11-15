@@ -5,7 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小&陈的 Demo 收藏夹 · 夏日画廊</title>
 <meta name="description" content="一座手绘风格的小画廊，收藏 AI 生成的交互式 Web Demo，点开卡片即可在线体验。">
-<link rel="preload" as="image" href="assets/hero.webp" fetchpriority="high">
+<script>
+/* 白天 / 黑夜：记住上次的选择，没选过就按本地时间（19 点到 6 点算夜里） */
+(function(){var t;try{t=localStorage.getItem('theme')}catch(e){}
+if(t!=='day'&&t!=='night'){var h=new Date().getHours();t=(h>=19||h<6)?'night':'day'}
+document.documentElement.dataset.theme=t;
+var l=document.createElement('link');l.rel='preload';l.as='image';l.href=t==='night'?'assets/hero-night.webp':'assets/hero.webp';l.fetchPriority='high';document.head.appendChild(l);})();
+</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" media="print" onload="this.media='all'">
 <style>
   :root{
@@ -267,6 +273,35 @@
     #petals{display:none}
   }
   @media (prefers-reduced-motion: reduce){.dafeiyu.jump .fig{animation:none}.spark{display:none}}
+
+  /* ---------- 黑夜主题 ---------- */
+  html[data-theme=night]{
+    --paper:#18203a;--paper-2:#222b48;--ink:#ece5d3;--ink-soft:#a8afc6;--moss:#a5cf7f;--leaf:#8fb86a;--sky:#a9c8ff;
+    --line:rgba(255,255,255,.1);--shadow:0 2px 0 rgba(0,0,0,.2),0 18px 40px -22px rgba(0,0,0,.8);
+  }
+  body{transition:background-color .6s,color .6s}
+  html[data-theme=night] body::before{opacity:.16}
+  html[data-theme=night] .nav{background:rgba(24,32,58,.72);border-color:rgba(255,255,255,.12);box-shadow:0 10px 30px -14px rgba(0,0,0,.7)}
+  html[data-theme=night] .hero .bg{background-image:url(assets/hero-night.webp)}
+  html[data-theme=night] .sunbeam{background:radial-gradient(40% 40% at 62% 34%,rgba(255,226,170,.22),transparent 65%),linear-gradient(90deg,rgba(8,14,36,.45),rgba(8,14,36,.15) 45%,transparent 65%)}
+  html[data-theme=night] .card,html[data-theme=night] .about{background:#222b48}
+  html[data-theme=night] .thumb .tag{background:rgba(24,32,58,.9)}
+  html[data-theme=night] .thumb img{filter:brightness(.82) saturate(.92)}
+  html[data-theme=night] .dapple{opacity:.3}
+  html[data-theme=night] .card::before{background:rgba(200,180,130,.4)}
+  html[data-theme=night] .dafeiyu .bubble,html[data-theme=night] .dafeiyu .bubble::after{background:#222b48}
+  html[data-theme=night] .music{background:rgba(24,32,58,.82);border-color:rgba(255,255,255,.14)}
+  html[data-theme=night] footer{background:linear-gradient(#2e4a35,#22392a 55%,#182a1f)}
+  html[data-theme=night] footer .grass path:first-of-type{fill:#3c5e3f}
+  html[data-theme=night] footer .grass path:last-of-type{fill:#2e4a35}
+  /* 切换按钮 */
+  .theme{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;
+    display:grid;place-items:center;padding:0;transition:transform .5s cubic-bezier(.2,.8,.2,1),background .3s}
+  .theme:hover{background:rgba(127,127,127,.12);transform:rotate(-20deg)}
+  .theme svg{width:17px;height:17px}
+  .theme .moon{display:none}
+  html[data-theme=night] .theme .sun{display:none}
+  html[data-theme=night] .theme .moon{display:block}
 </style>
 </head>
 <body>
@@ -277,6 +312,10 @@
   <a class="l" href="#ch2">Opus 5.5</a>
   <a class="l" href="#ch3">Deepseek</a>
   <a class="l" href="#about">关于</a>
+  <button class="theme" id="theme" type="button" aria-label="切换白天和黑夜" title="切换白天 / 黑夜">
+    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+  </button>
   <a class="gh" href="https://github.com/minghong-chen/Demo-Pages" rel="noopener">GitHub</a>
 </nav>
 
@@ -298,8 +337,23 @@
   <div class="scroll-hint">往下<span></span></div>
 </header>
 <script>
+/* 白天 / 黑夜切换：先把目标首图下好再换，避免闪空 */
+(function(){
+  var b=document.getElementById('theme'),root=document.documentElement;
+  function set(t){
+    var im=new Image(),done=0;
+    function apply(){ if(done) return; done=1; root.dataset.theme=t; try{localStorage.setItem('theme',t)}catch(e){} b.setAttribute('aria-pressed',t==='night'); }
+    im.onload=im.onerror=apply; im.src=t==='night'?'assets/hero-night.webp':'assets/hero.webp'; if(im.complete) apply(); setTimeout(apply,2500);
+  }
+  b.addEventListener('click',function(){ set(root.dataset.theme==='night'?'day':'night'); });
+  // 白天空闲时顺手把夜景图缓存好，切换就是秒换
+  (window.requestIdleCallback||setTimeout)(function(){ new Image().src=root.dataset.theme==='night'?'assets/hero.webp':'assets/hero-night.webp'; },3000);
+})();
+</script>
+
+<script>
 (function(){var h=document.getElementById('top'),done=0;function go(){if(!done){done=1;h.classList.add('ready')}}
-var im=new Image();im.onload=im.onerror=go;im.src='assets/hero.webp';if(im.complete)go();setTimeout(go,4000)})();
+var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.dataset.theme==='night'?'assets/hero-night.webp':'assets/hero.webp';if(im.complete)go();setTimeout(go,4000)})();
 </script>
 
 
@@ -482,6 +536,60 @@ var im=new Image();im.onload=im.onerror=go;im.src='assets/hero.webp';if(im.compl
   }
   var N = W < 700 ? 26 : 48;
   for(var j=0;j<N;j++) P.push(mk(true));
+  // 黑夜：首屏自动放烟火
+  var R = [], F = [], FL = [], fwCols = ['#ff4d5e','#ff9f1c','#ffd60a','#2ea8ff','#ff5fa8','#5fd35f','#a66bff'];
+
+  function burst(x,y){
+    var c1 = fwCols[(Math.random()*fwCols.length)|0], c2 = fwCols[(Math.random()*fwCols.length)|0], n = 90;
+    FL.push({x:x, y:y, life:0, c:c1});
+    for(var k=0;k<n;k++){
+      var an = k/n*6.28 + Math.random()*.1, v = 3 + Math.random()*3.5;
+      F.push({x:x, y:y, px:x, py:y, vx:Math.cos(an)*v, vy:Math.sin(an)*v, life:0, max:55+Math.random()*35, c:k%3 ? c1 : c2, tw:Math.random()<.35});
+    }
+    if(F.length > 600) F.splice(0, F.length-600);
+    P.forEach(function(p){ var dx = p.x-x, dy = p.y-y, d = Math.hypot(dx,dy)||1; if(d < 220){ var f = (1-d/220)*5; p.ex += dx/d*f; p.ey += dy/d*f; } });
+  }
+  function drawFW(){
+    if(!R.length && !F.length && !FL.length) return;
+    cx.save(); cx.lineCap = 'round'; cx.globalCompositeOperation = 'lighter';
+    for(var li=FL.length-1; li>=0; li--){ // 炸开瞬间的一团光
+      var fl = FL[li], kk = ++fl.life/18; if(kk >= 1){ FL.splice(li,1); continue; }
+      var gr = cx.createRadialGradient(fl.x,fl.y,0,fl.x,fl.y,40+kk*90);
+      gr.addColorStop(0,'rgba(255,255,255,'+(.9*(1-kk)).toFixed(3)+')'); gr.addColorStop(.35,fl.c); gr.addColorStop(1,'rgba(255,255,255,0)');
+      cx.globalAlpha = .55*(1-kk); cx.fillStyle = gr; cx.beginPath(); cx.arc(fl.x,fl.y,40+kk*90,0,6.28); cx.fill();
+    }
+    cx.globalAlpha = 1; cx.shadowBlur = 10;
+    for(var ri=R.length-1; ri>=0; ri--){
+      var r = R[ri], k = ++r.t/r.n, e2 = 1-Math.pow(1-k,2);
+      var ox = r.x + (r.tx-r.x)*e2, oy = r.y + (r.ty-r.y)*e2;
+      // 火箭：拖着金色尾焰和火星往上窜
+      var dxr = ox - (r.lx==null ? ox : r.lx), dyr = oy - (r.ly==null ? oy+8 : r.ly), mr = Math.hypot(dxr,dyr)||1;
+      var tx2 = ox - dxr/mr*60, ty2 = oy - dyr/mr*60;
+      var tg = cx.createLinearGradient(ox,oy,tx2,ty2);
+      tg.addColorStop(0,'rgba(255,240,200,1)'); tg.addColorStop(.3,'rgba(255,170,60,.9)'); tg.addColorStop(1,'rgba(255,120,40,0)');
+      cx.shadowColor = '#ff9a2e'; cx.shadowBlur = 16; cx.strokeStyle = tg; cx.lineWidth = 4;
+      cx.beginPath(); cx.moveTo(tx2,ty2); cx.lineTo(ox,oy); cx.stroke();
+      cx.fillStyle = '#fff'; cx.beginPath(); cx.arc(ox, oy, 3.5, 0, 6.28); cx.fill();
+      for(var sp=0; sp<2; sp++) F.push({x:ox, y:oy+4, px:ox, py:oy+4, vx:(Math.random()-.5)*1.4, vy:1+Math.random()*1.5, life:0, max:18+Math.random()*14, c:'#ffb52e', tw:true});
+      r.lx = ox; r.ly = oy;
+      if(k >= 1){ burst(r.tx, r.ty); R.splice(ri,1); }
+    }
+    for(var fi=F.length-1; fi>=0; fi--){
+      var f = F[fi]; f.life++;
+      if(f.life > f.max){ F.splice(fi,1); continue; }
+      f.px = f.x; f.py = f.y; f.vx *= .96; f.vy = f.vy*.96 + .045; f.x += f.vx + gust*.3; f.y += f.vy;
+      var al = 1 - f.life/f.max; if(f.tw && f.life > f.max*.5) al *= (Math.random() < .5 ? .2 : 1);
+      cx.globalAlpha = al; cx.shadowColor = f.c; cx.strokeStyle = f.c; cx.lineWidth = 3.5*al + 1;
+      cx.beginPath(); cx.moveTo(f.px - f.vx*3, f.py - f.vy*3); cx.lineTo(f.x, f.y); cx.stroke();
+      cx.fillStyle = 'rgba(255,255,255,.9)'; cx.beginPath(); cx.arc(f.x, f.y, 1.2*al + .4, 0, 6.28); cx.fill();
+    }
+    cx.restore();
+  }
+  function launch(){
+    var tx = W*(.12 + Math.random()*.76), ty = H*(.1 + Math.random()*.32), sy0 = H - 10;
+    R.push({x:tx + (Math.random()-.5)*60, y:sy0, tx:tx, ty:ty, t:0, n:Math.max(28, Math.min(60, (sy0-ty)/11|0)), lx:null, ly:null});
+  }
+  var nextFW = 40;
   var gust = 0, tick = 0, visible = true;
   // 鼠标风场：指针划过时带起一阵风，花瓣被推开、打旋，并留下几道手绘风线
   var ptr = {x:-999, y:-999, vx:0, vy:0, on:false, t:0}, S = [];
@@ -534,6 +642,7 @@ var im=new Image();im.onload=im.onerror=go;im.src='assets/hero.webp';if(im.compl
       // 末端打个小卷，像动画里的风
       if(w.bend > .3){ cx.beginPath(); cx.arc(hx+nx*6, hy+ny*6, 6, 0, Math.PI*1.3); cx.stroke(); }
     }
+    var night = document.documentElement.dataset.theme === 'night';
     P.forEach(function(p,i){
       p.w += .03; p.a += p.va;
       if(live && spd > 1){
@@ -544,20 +653,29 @@ var im=new Image();im.onload=im.onerror=go;im.src='assets/hero.webp';if(im.compl
           p.va += (Math.random()-.5)*ff*.02; }
       }
       p.ex *= .95; p.ey *= .95; p.va *= .995;
-      p.x += p.vx + gust + Math.cos(p.w)*.4 + p.ex;
-      p.y += p.vy + Math.sin(p.w)*.5 + p.ey;
+      var dr = night ? .25 : 1;
+      p.x += (p.vx + gust)*dr + Math.cos(p.w)*.4 + p.ex;
+      p.y += p.vy*dr + Math.sin(p.w)*.5 + p.ey;
       if(p.x > W+30 || p.x < -W*.4 || p.y > H+30 || p.y < -30) P[i] = mk(false);
       cx.save(); cx.translate(p.x,p.y); cx.rotate(p.a);
-      if(p.seed){ // 蒲公英种子
+      if(p.seed && !night){ // 蒲公英种子
         cx.strokeStyle = 'rgba(255,255,255,.85)'; cx.lineWidth = .8;
         cx.beginPath(); cx.moveTo(0,0); cx.lineTo(0,p.s*1.6); cx.stroke();
         for(var k=0;k<7;k++){ var an = -Math.PI/2 + (k-3)*.32; cx.beginPath(); cx.moveTo(0,0); cx.lineTo(Math.cos(an)*p.s, Math.sin(an)*p.s); cx.stroke(); }
+      } else if(night){ // 夜里花瓣换成萤火虫
+        var gl = .55 + .45*Math.sin(p.w*2.2 + p.a);
+        cx.globalAlpha = gl; cx.fillStyle = 'rgba(255,240,150,.25)'; cx.beginPath(); cx.arc(0,0,p.s*1.6,0,6.28); cx.fill();
+        cx.fillStyle = '#fff6b0'; cx.beginPath(); cx.arc(0,0,p.s*.45,0,6.28); cx.fill();
       } else { // 花瓣
         cx.fillStyle = p.c; cx.globalAlpha = .9;
         cx.beginPath(); cx.ellipse(0,0,p.s,p.s*.55*Math.abs(Math.cos(p.w*1.3))+.6,0,0,6.28); cx.fill();
       }
       cx.restore();
     });
+    if(document.documentElement.dataset.theme === 'night'){
+      if(--nextFW <= 0){ launch(); if(Math.random() < .3) setTimeout(launch, 260); nextFW = 70 + Math.random()*110; }
+    } else { R.length = 0; }
+    drawFW();
     requestAnimationFrame(loop);
   }
   loop();
