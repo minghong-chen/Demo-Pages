@@ -595,7 +595,7 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
   var ptr = {x:-999, y:-999, vx:0, vy:0, on:false, t:0}, S = [];
   function local(e){ var r = cv.getBoundingClientRect(); return {x:e.clientX-r.left, y:e.clientY-r.top, inside:e.clientY>=r.top && e.clientY<=r.bottom}; }
   addEventListener('pointermove', function(e){
-    var q = local(e); if(!q.inside){ ptr.on = false; return; }
+    var q = local(e); if(!q.inside || document.documentElement.dataset.theme === 'night'){ ptr.on = false; return; } // 夜里不要风场
     if(ptr.on){ ptr.vx = ptr.vx*.6 + (q.x-ptr.x)*.4; ptr.vy = ptr.vy*.6 + (q.y-ptr.y)*.4; }
     ptr.x = q.x; ptr.y = q.y; ptr.on = true; ptr.t = tick;
   }, {passive:true});
@@ -606,7 +606,7 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
     if(S.length > 28) S.shift();
   }
   document.getElementById('top').addEventListener('pointerdown', function(e){
-    if(e.target.closest('a,button')) return;
+    if(e.target.closest('a,button') || document.documentElement.dataset.theme === 'night') return;
     var q = local(e);
     P.forEach(function(p){ // 一阵旋风把附近的花瓣吹散
       var dx = p.x-q.x, dy = p.y-q.y, d = Math.hypot(dx,dy)||1;
