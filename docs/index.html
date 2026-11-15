@@ -471,16 +471,15 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
   });
   t.innerHTML = html;
 
-  // 首屏视差（滚动 + 鼠标）
-  var layers = document.querySelectorAll('.hero .layer'), mx = 0, my = 0, sy = 0;
+  // 首屏视差（只跟随滚动）
+  var layers = document.querySelectorAll('.hero .layer'), sy = 0;
   function para(){
     layers.forEach(function(l){
       var k = parseFloat(l.dataset.depth);
-      l.style.translate = (mx*k*12)+'px '+(my*k*8 + sy*k*0.25)+'px';
+      l.style.translate = '0 '+(sy*k*0.25)+'px';
     });
   }
   if(!reduce){
-    addEventListener('mousemove', function(e){ if(document.documentElement.dataset.theme === 'night'){ if(mx||my){ mx = my = 0; requestAnimationFrame(para); } return; } mx = e.clientX/innerWidth-.5; my = e.clientY/innerHeight-.5; requestAnimationFrame(para); });
     addEventListener('scroll', function(){ sy = scrollY; if(sy < innerHeight*1.2) requestAnimationFrame(para); }, {passive:true});
   }
 
