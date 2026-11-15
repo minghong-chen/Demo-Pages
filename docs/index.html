@@ -542,7 +542,7 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
     var c1 = fwCols[(Math.random()*fwCols.length)|0], c2 = fwCols[(Math.random()*fwCols.length)|0], n = 64;
     FL.push({x:x, y:y, life:0, c:c1});
     for(var k=0;k<n;k++){
-      var an = k/n*6.28 + Math.random()*.1, v = (.85 + Math.random()*1)*fwScale();
+      var an = k/n*6.28 + Math.random()*.1, v = (1.05 + Math.random()*1.2)*fwScale();
       F.push({x:x, y:y, px:x, py:y, vx:Math.cos(an)*v, vy:Math.sin(an)*v, life:0, max:210+Math.random()*90, c:k%3 ? c1 : c2, tw:Math.random()<.35});
     }
     if(F.length > 600) F.splice(0, F.length-600);
@@ -558,7 +558,7 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
     }
     cx.globalAlpha = 1;
     for(var ri=R.length-1; ri>=0; ri--){
-      var r = R[ri], k = ++r.t/r.n, e2 = 1-Math.pow(1-k,2);
+      var r = R[ri], k = ++r.t/r.n, e2 = k*(1.35 - .35*k); // 一路往上冲，快到顶时略减速就炸，不停顿
       var ox = r.x + (r.tx-r.x)*e2, oy = r.y + (r.ty-r.y)*e2;
       // 火箭：拖着金色尾焰和火星往上窜
       var dxr = ox - (r.lx==null ? ox : r.lx), dyr = oy - (r.ly==null ? oy+8 : r.ly), mr = Math.hypot(dxr,dyr)||1;
@@ -587,7 +587,7 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
   function fwScale(){ return Math.max(.45, Math.min(1, W/1400)); }
   function launch(){
     var tx = W*(.12 + Math.random()*.76), ty = H*(.1 + Math.random()*.32), sy0 = H - 10;
-    R.push({x:tx + (Math.random()-.5)*60, y:sy0, tx:tx, ty:ty, t:0, n:Math.max(110, Math.min(200, (sy0-ty)/2.8|0)), lx:null, ly:null});
+    R.push({x:tx + (Math.random()-.5)*60, y:sy0, tx:tx, ty:ty, t:0, n:Math.max(70, Math.min(130, (sy0-ty)/4.2|0)), lx:null, ly:null});
   }
   var nextFW = 40;
   // 夜里的萤火虫：数量少，匀速慢慢飘，在草丛上方一明一灭
