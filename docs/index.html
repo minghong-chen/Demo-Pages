@@ -227,6 +227,12 @@
     border-top:1.5px solid var(--ink);transform:translateY(-50%) rotate(45deg)}
   @media (hover:hover){.dafeiyu:hover .bubble{opacity:1;transform:none}}
   .dafeiyu.jump .bubble{opacity:1;transform:none}
+  .dafeiyu .poke{position:absolute;left:50%;bottom:100%;margin-bottom:4px;white-space:nowrap;background:var(--roof);color:#fffaf0;
+    font-size:13px;font-weight:700;letter-spacing:.08em;padding:3px 11px;border-radius:999px;box-shadow:0 3px 10px rgba(196,71,58,.35);
+    pointer-events:none;animation:poke 1.6s ease-in-out infinite;transition:opacity .3s}
+  .dafeiyu .poke::after{content:"";position:absolute;left:50%;top:100%;margin-left:-5px;border:5px solid transparent;border-top-color:var(--roof)}
+  @keyframes poke{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-6px)}}
+  .dafeiyu.poked .poke,.dafeiyu.jump .poke{opacity:0;animation:none;transform:translate(-50%,0)}
   .spark{position:absolute;width:10px;height:10px;pointer-events:none;z-index:6;
     background:radial-gradient(circle,#ffd85a 0 35%,transparent 36%),conic-gradient(from 0deg,transparent 0 40deg,#e8a33c 40deg 50deg,transparent 50deg 130deg,#e8a33c 130deg 140deg,transparent 140deg 220deg,#c4473a 220deg 230deg,transparent 230deg 310deg,#c4473a 310deg 320deg,transparent 320deg);
     border-radius:50%;animation:spark .9s ease-out forwards}
@@ -246,7 +252,7 @@
     padding:5px 12px;border-radius:8px;opacity:0;transform:translateY(6px);transition:all .5s;pointer-events:none}
   .music .hint.show{opacity:1;transform:none}
   @media (max-width:760px){
-    .grid{grid-template-columns:1fr;gap:34px}.dafeiyu{width:84px;right:10px;bottom:calc(100% - 34px)}.dafeiyu .bubble{right:auto;left:-6px;top:-30px;font-size:12px}.dafeiyu .bubble::after{display:none}.grid.solo .card{grid-template-columns:1fr}.grid.solo .card-body{padding:16px 6px 0}.grid.solo .card-body h4{font-size:20px}
+    .grid{grid-template-columns:1fr;gap:34px}.dafeiyu{width:84px;right:10px;bottom:calc(100% - 34px)}.dafeiyu .bubble{right:auto;left:-6px;top:-30px;font-size:12px}.dafeiyu .bubble::after{display:none}.dafeiyu .poke{font-size:11px;padding:2px 8px}.grid.solo .card{grid-template-columns:1fr}.grid.solo .card-body{padding:16px 6px 0}.grid.solo .card-body h4{font-size:20px}
     .nav{gap:14px;font-size:14px}.nav a.l{display:none}
     .hero-copy{top:22%}.hero .bg{background-position:74% 62%}.hero .bg video{object-position:74% 62%}
     .intro{grid-template-columns:1fr;gap:22px;margin-top:-20px}.stats{justify-content:flex-start}
@@ -350,6 +356,7 @@
     <div class="grid solo">
       <div class="dafeiyu" id="dafeiyu" role="button" aria-label="舞狮的大肥鱼，点一下">
         <span class="bubble">Ciallo～(∠・ω&lt; )⌒☆</span>
+        <span class="poke" aria-hidden="true">点我 ✨</span>
         <span class="fig"><span class="crop"><img id="dfyImg" src="assets/dafeiyu-wushi.webp" alt="顶着舞狮头的大肥鱼"></span></span>
         <span class="ground"></span>
       </div>
@@ -670,7 +677,9 @@
       s.style.setProperty('--dx',Math.cos(a)*r+'px');s.style.setProperty('--dy',Math.sin(a)*r-30+'px');s.style.animationDelay=(i*.03)+'s';
       f.parentNode.appendChild(s);setTimeout(function(x){x.remove()},1300,s);}
   }
-  f.addEventListener('click',function(){ if(busy) return; busy=true; f.classList.add('jump'); drum(); setTimeout(sparks,300);
+  try{ if(localStorage.getItem('dfyPoked')) f.classList.add('poked'); }catch(e){}
+  f.addEventListener('click',function(){ f.classList.add('poked'); try{localStorage.setItem('dfyPoked','1')}catch(e){}
+    if(busy) return; busy=true; f.classList.add('jump'); drum(); setTimeout(sparks,300);
     setTimeout(function(){f.classList.remove('jump');busy=false},950); });
 })();
 </script>
