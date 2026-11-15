@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>小&陈的 Demo 收藏夹 · 夏日画廊</title>
 <meta name="description" content="一座手绘风格的小画廊，收藏 AI 生成的交互式 Web Demo，点开卡片即可在线体验。">
-<link rel="preload" as="image" href="assets/hero.webp">
+<link rel="preload" as="image" href="assets/hero.webp" fetchpriority="high">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" media="print" onload="this.media='all'">
 <style>
   :root{
@@ -56,7 +56,7 @@
   /* ---------- 首屏 ---------- */
   .hero{position:relative;height:100vh;min-height:620px;overflow:hidden;background:#2f5f9e}
   .hero .layer{position:absolute;inset:-2% -1.5%;will-change:transform}
-  .hero .bg{background:url(assets/hero.webp) center 62%/cover no-repeat;image-rendering:auto;animation:breathe 26s ease-in-out infinite alternate}
+  .hero .bg{background:url(assets/hero.webp) center 62%/cover no-repeat,url(data:image/webp;base64,UklGRlgCAABXRUJQVlA4IEwCAAAwDACdASpAABsAPrVKnkonJCKhqA6o4BaJbACdOUF+AcdtX7yF4vcNvWufqbsveDWStaDa5bmm2aAXUISzcQvMvDD2WmnyzDtCUwMAniyVbf4G5Qa6gQ5TuOwAbSowsMK6agQFUG5QDcgAAP75vTf4j3lEs1SMd/DtSe5hiawLJL4zh9WixCO56vW3YfHbZXdwdkeeolTvZKlLwuXmXc0CDea3K8bwvTKiPFUlJ83SLMvyUb5ocSBttaoZfQrPPl7NqOLLX1DkSwi73MpzneeE+Z9MQO32ND8SwpoDISEl3gbBRxhLsxFBAuuqclMDmIF5TnlM72XoKie/w4z6VguoMOT/wxM613SvQy+wYcJq48PAhuWYG2izPWxRGwEhA/tEB/JF9Mzuzo0Yy2nr1lDp21nReyyG3xfli8p79pIpLM2eh24OqwERF677wiPzlaKDkbkX2K3TixjFRDptTDDbKFz0rJQRBmU70KhqbOkZzUbkCx02ecpw5r7E+KGVIqwXxxNLtxMEUn7YNiufoQDsOYTYuczg8VAjis9pABWK8T1F5J0ApOZGJ6/LKdqPwtQdPtP115mtKcErQvXycaORqRa1wiwbWUXWjf9FCROHCS6v5n91HQAbbjXUM01c6AsDmODaq8XCZ2LlGnwSOPre58l6P20p7Y2msiLiEOEDyYgVCGdxly0SDeOJ6rQvB1mbk1yPdQ8vSy9wSAD/bYBtbsy7Q6YvGSoN5eoeMgpF85mOPwT8Nj+qVqW86rB4izrvdGKEjlNHHLp4KAA=) center 62%/cover no-repeat;image-rendering:auto;animation:breathe 26s ease-in-out infinite alternate}
   @keyframes breathe{from{transform:scale(1)}to{transform:scale(1.035)}}
   /* 漂浮的云 */
   .cloud{position:absolute;opacity:.7;filter:blur(2.5px);pointer-events:none;mix-blend-mode:screen}
