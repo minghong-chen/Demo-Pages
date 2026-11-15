@@ -497,17 +497,43 @@ var im=new Image();im.onload=im.onerror=go;im.src='assets/hero.webp';if(im.compl
     S.push({x:x, y:y, ux:dx/m, uy:dy/m, len:len, bend:(Math.random()-.5)*.9, life:0, max:55+Math.random()*30, sp:1.5+Math.min(m,30)*.12});
     if(S.length > 28) S.shift();
   }
+  // 点空白处放烟火：一枚小火箭从下方升起，到点击处炸开
+  var R = [], F = [], fwCols = ['#ffd27a','#ff9e7a','#ffe9b8','#9fd4ff','#ffb3c7','#c8f0a0'];
   document.getElementById('top').addEventListener('pointerdown', function(e){
     if(e.target.closest('a,button')) return;
-    var q = local(e);
-    P.forEach(function(p){ // 一阵旋风把附近的花瓣吹散
-      var dx = p.x-q.x, dy = p.y-q.y, d = Math.hypot(dx,dy)||1;
-      if(d < 280){ var f = (1-d/280)*7; p.ex += dx/d*f - dy/d*f*.5; p.ey += dy/d*f + dx/d*f*.5; }
-    });
-    for(var k=0;k<7;k++){ var an = k/7*6.28 + Math.random()*.4; streak(q.x+Math.cos(an)*20, q.y+Math.sin(an)*20, Math.cos(an+.6), Math.sin(an+.6), 50+Math.random()*50); }
-    for(var k2=0;k2<6;k2++){ var np = mk(true); np.x = q.x; np.y = q.y; var a2 = Math.random()*6.28; np.ex = Math.cos(a2)*4; np.ey = Math.sin(a2)*4; P.push(np); }
-    if(P.length > N+40) P.splice(0, P.length-N-40);
+    var q = local(e), sy0 = Math.min(H, q.y + 160 + Math.random()*80);
+    R.push({x:q.x + (Math.random()-.5)*30, y:sy0, tx:q.x, ty:q.y, t:0, n:22 + ((sy0-q.y)/6|0)});
+    if(R.length > 6) R.shift();
   });
+  function burst(x,y){
+    var c1 = fwCols[(Math.random()*fwCols.length)|0], c2 = fwCols[(Math.random()*fwCols.length)|0], n = 70;
+    for(var k=0;k<n;k++){
+      var an = k/n*6.28 + Math.random()*.1, v = 2.2 + Math.random()*2.6;
+      F.push({x:x, y:y, px:x, py:y, vx:Math.cos(an)*v, vy:Math.sin(an)*v, life:0, max:55+Math.random()*35, c:k%3 ? c1 : c2, tw:Math.random()<.35});
+    }
+    if(F.length > 600) F.splice(0, F.length-600);
+    P.forEach(function(p){ var dx = p.x-x, dy = p.y-y, d = Math.hypot(dx,dy)||1; if(d < 220){ var f = (1-d/220)*5; p.ex += dx/d*f; p.ey += dy/d*f; } });
+  }
+  function drawFW(){
+    if(!R.length && !F.length) return;
+    cx.save(); cx.globalCompositeOperation = 'lighter'; cx.lineCap = 'round';
+    for(var ri=R.length-1; ri>=0; ri--){
+      var r = R[ri], k = ++r.t/r.n, e2 = 1-Math.pow(1-k,2);
+      var ox = r.x + (r.tx-r.x)*e2, oy = r.y + (r.ty-r.y)*e2;
+      cx.strokeStyle = 'rgba(255,230,180,.75)'; cx.lineWidth = 2;
+      cx.beginPath(); cx.moveTo(ox, oy+14); cx.lineTo(ox, oy); cx.stroke();
+      if(k >= 1){ burst(r.tx, r.ty); R.splice(ri,1); }
+    }
+    for(var fi=F.length-1; fi>=0; fi--){
+      var f = F[fi]; f.life++;
+      if(f.life > f.max){ F.splice(fi,1); continue; }
+      f.px = f.x; f.py = f.y; f.vx *= .96; f.vy = f.vy*.96 + .045; f.x += f.vx + gust*.3; f.y += f.vy;
+      var al = 1 - f.life/f.max; if(f.tw && f.life > f.max*.5) al *= (Math.random() < .5 ? .2 : 1);
+      cx.globalAlpha = al; cx.strokeStyle = f.c; cx.lineWidth = 2.2*al + .6;
+      cx.beginPath(); cx.moveTo(f.px - f.vx*2, f.py - f.vy*2); cx.lineTo(f.x, f.y); cx.stroke();
+    }
+    cx.restore();
+  }
   new IntersectionObserver(function(es){ visible = es[0].isIntersecting; if(visible) loop(); }).observe(cv);
   function loop(){
     if(!visible) return;
@@ -558,6 +584,7 @@ var im=new Image();im.onload=im.onerror=go;im.src='assets/hero.webp';if(im.compl
       }
       cx.restore();
     });
+    drawFW();
     requestAnimationFrame(loop);
   }
   loop();
