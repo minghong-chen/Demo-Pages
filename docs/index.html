@@ -191,6 +191,43 @@
     100%{transform:translate(3px,5px) scale(1.01);opacity:.95}}
   #leaves{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:41;opacity:0;transition:opacity 1.2s}
   #leaves.on{opacity:1}
+
+  /* ---------- 第三章：舞狮大肥鱼 ---------- */
+  .grid.solo{position:relative}
+  .dafeiyu{position:absolute;right:46px;bottom:calc(100% - 26px);width:170px;z-index:5;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;user-select:none}
+  .dafeiyu .fig{display:block;width:100%;transform-origin:50% 92%;filter:drop-shadow(0 6px 6px rgba(59,50,38,.18))}
+  .dafeiyu .crop{display:block;width:100%;aspect-ratio:400/494;overflow:hidden;pointer-events:none}
+  .dafeiyu .crop video{display:block;width:100%;height:auto;pointer-events:none}
+  .dafeiyu .crop img{display:block;width:100%;height:auto}
+  .dafeiyu .ground{position:absolute;left:22%;right:22%;bottom:-4px;height:12px;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(59,50,38,.28),transparent)}
+  @keyframes lion{
+    0%  {transform:translateY(0) rotate(0) scale(1,1)}
+    10% {transform:translateY(2px) rotate(-2deg) scale(1.04,.95)}
+    22% {transform:translateY(-18px) rotate(-7deg) scale(.97,1.04)}
+    34% {transform:translateY(0) rotate(-3deg) scale(1.05,.94)}
+    42% {transform:translateY(-4px) rotate(4deg)}
+    47% {transform:translateY(-4px) rotate(-4deg)}
+    52% {transform:translateY(-4px) rotate(5deg)}
+    57% {transform:translateY(-2px) rotate(-3deg)}
+    64% {transform:translateY(2px) rotate(2deg) scale(1.04,.95)}
+    76% {transform:translateY(-16px) rotate(7deg) scale(.97,1.04)}
+    88% {transform:translateY(0) rotate(2deg) scale(1.04,.96)}
+    100%{transform:translateY(0) rotate(0) scale(1,1)}}
+  @keyframes ground{0%,34%,64%,88%,100%{transform:scaleX(1);opacity:1}22%,76%{transform:scaleX(.72);opacity:.55}}
+  .dafeiyu.jump .fig{animation:bigjump .9s cubic-bezier(.3,.7,.3,1)}
+  @keyframes bigjump{0%{transform:scale(1.08,.9)}35%{transform:translateY(-70px) rotate(-360deg) scale(.95,1.06)}70%{transform:translateY(0) rotate(-360deg) scale(1.1,.88)}100%{transform:rotate(-360deg)}}
+  .dafeiyu .bubble{position:absolute;right:78%;top:6%;white-space:nowrap;background:#fffaf0;border:1.5px solid var(--ink);border-radius:14px;
+    padding:4px 12px;font-size:15px;font-weight:700;color:var(--roof);letter-spacing:.06em;opacity:0;transform:translateY(6px) scale(.9);
+    transition:all .35s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+  .dafeiyu .bubble::after{content:"";position:absolute;right:-7px;top:50%;width:10px;height:10px;background:#fffaf0;border-right:1.5px solid var(--ink);
+    border-top:1.5px solid var(--ink);transform:translateY(-50%) rotate(45deg)}
+  .dafeiyu:hover .bubble,.dafeiyu.jump .bubble{opacity:1;transform:none}
+  .spark{position:absolute;width:10px;height:10px;pointer-events:none;z-index:6;
+    background:radial-gradient(circle,#ffd85a 0 35%,transparent 36%),conic-gradient(from 0deg,transparent 0 40deg,#e8a33c 40deg 50deg,transparent 50deg 130deg,#e8a33c 130deg 140deg,transparent 140deg 220deg,#c4473a 220deg 230deg,transparent 230deg 310deg,#c4473a 310deg 320deg,transparent 320deg);
+    border-radius:50%;animation:spark .9s ease-out forwards}
+  @keyframes spark{from{opacity:1;transform:translate(0,0) scale(.6)}to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.6) rotate(180deg)}}
   /* ---------- 音乐按钮 ---------- */
   .music{position:fixed;right:22px;bottom:22px;z-index:55;display:flex;align-items:center;gap:10px;
     padding:10px 16px 10px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.7);cursor:pointer;
@@ -206,7 +243,7 @@
     padding:5px 12px;border-radius:8px;opacity:0;transform:translateY(6px);transition:all .5s;pointer-events:none}
   .music .hint.show{opacity:1;transform:none}
   @media (max-width:760px){
-    .grid{grid-template-columns:1fr;gap:34px}.grid.solo .card{grid-template-columns:1fr}.grid.solo .card-body{padding:16px 6px 0}.grid.solo .card-body h4{font-size:20px}
+    .grid{grid-template-columns:1fr;gap:34px}.dafeiyu{width:110px;right:14px}.grid.solo .card{grid-template-columns:1fr}.grid.solo .card-body{padding:16px 6px 0}.grid.solo .card-body h4{font-size:20px}
     .nav{gap:14px;font-size:14px}.nav a.l{display:none}
     .hero-copy{top:22%}.hero .bg{background-position:74% 62%}
     .intro{grid-template-columns:1fr;gap:22px;margin-top:-20px}.stats{justify-content:flex-start}
@@ -218,6 +255,7 @@
     h1 .ch,.kicker,.hero-copy p,.cta,.reveal{opacity:1!important;transform:none!important}
     #petals{display:none}
   }
+  @media (prefers-reduced-motion: reduce){.dafeiyu.jump .fig{animation:none}.spark{display:none}}
 </style>
 </head>
 <body>
@@ -307,6 +345,11 @@
       <svg class="vine" viewBox="0 0 400 14" preserveAspectRatio="none"><path d="M0 7 Q 25 0 50 7 T 100 7 T 150 7 T 200 7 T 250 7 T 300 7 T 350 7 T 400 7" stroke="#4f7a3a" stroke-width="1.5" fill="none"/></svg>
     </div>
     <div class="grid solo">
+      <div class="dafeiyu" id="dafeiyu" role="button" aria-label="舞狮的大肥鱼，点一下">
+        <span class="bubble">咚咚锵！</span>
+        <span class="fig"><span class="crop"><video id="dfyVid" autoplay loop muted playsinline preload="auto" aria-label="顶着舞狮头的大肥鱼"><source src="assets/dafeiyu-wushi.webm" type="video/webm"></video></span></span>
+        <span class="ground"></span>
+      </div>
       <a class="card reveal" style="--r:-.5deg" href="demos/wind-bell-bay/">
         <div class="thumb"><img src="assets/t-windbell.webp" alt="云端小镇" loading="lazy"><span class="tag">wind-bell-bay</span><span class="play"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 1.5l9 5.5-9 5.5z" fill="#3b3226"/></svg></span></div>
         <div class="card-body"><h4>风铃湾<small>Wind Bell Bay</small></h4><p>一座漂在云端的 3D 箱庭小镇：昼夜流转，火车环岛，风车与飞鸟。</p></div>
@@ -332,7 +375,7 @@
     <path fill="#6f9b4a" d="M0 120 L0 90 Q30 55 55 95 Q85 50 115 92 Q145 58 175 96 Q205 48 235 92 Q265 60 295 96 Q325 50 355 92 Q385 62 415 96 Q445 52 475 92 Q505 60 535 96 Q565 48 595 92 Q625 58 655 96 Q685 50 715 92 Q745 62 775 96 Q805 52 835 92 Q865 60 895 96 Q925 48 955 92 Q985 58 1015 96 Q1045 50 1075 92 Q1105 62 1135 96 Q1165 54 1200 90 L1200 120Z"/>
   </svg>
   <div class="wrap">
-    <div><div class="bye">下次再来坐坐。</div><small>Demo Gallery · 由 GitHub Pages 托管</small></div>
+    <div><div class="bye">下次再来坐坐。</div><small>Demo Gallery · 由 GitHub Pages 托管 · 舞狮大肥鱼动画来自 <a href="https://github.com/PC2005-cloud/dsh-pet" rel="noopener">PC2005-cloud/dsh-pet</a>（MIT）</small></div>
     <a href="https://github.com/minghong-chen/Demo-Pages" rel="noopener">查看源码仓库 →</a>
   </div>
 </footer>
@@ -580,6 +623,34 @@
     if(vis&&!on){on=true;cv.classList.add('on');nextGust=t+30;if(!raf)loop();}
     else if(!vis&&on){on=false;cv.classList.remove('on');}
   },{threshold:[0,.1,.2,.3,.4,.5,.6]}).observe(main);
+})();
+</script>
+
+<script>
+/* 舞狮大肥鱼：点一下翻个跟头，配一声“咚咚锵” */
+(function(){
+  var f=document.getElementById('dafeiyu'); if(!f) return; var ac,busy=false;
+  var v=document.getElementById('dfyVid'), ua=navigator.userAgent;
+  if(v && /^((?!chrome|chromium|android|crios|fxios|edg).)*safari/i.test(ua)){var im=new Image();im.src='assets/dafeiyu-wushi.webp';im.alt='顶着舞狮头的大肥鱼';v.parentNode.replaceChild(im,v);v=null;}
+  if(v && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause();}
+  function drum(){
+    try{
+      ac=ac||new (window.AudioContext||window.webkitAudioContext)(); var t=ac.currentTime+.02;
+      [0,.18].forEach(function(o){var os=ac.createOscillator(),g=ac.createGain();os.frequency.setValueAtTime(140,t+o);os.frequency.exponentialRampToValueAtTime(55,t+o+.25);
+        g.gain.setValueAtTime(.5,t+o);g.gain.exponentialRampToValueAtTime(.001,t+o+.35);os.connect(g);g.connect(ac.destination);os.start(t+o);os.stop(t+o+.4);});
+      var len=ac.sampleRate*.9,b=ac.createBuffer(1,len,ac.sampleRate),d=b.getChannelData(0);for(var i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);
+      var n=ac.createBufferSource(),hp=ac.createBiquadFilter(),g2=ac.createGain();n.buffer=b;hp.type='highpass';hp.frequency.value=3500;g2.gain.value=.22;
+      n.connect(hp);hp.connect(g2);g2.connect(ac.destination);n.start(t+.38);
+    }catch(e){}
+  }
+  function sparks(){
+    for(var i=0;i<9;i++){var s=document.createElement('i');s.className='spark';var a=Math.random()*6.28,r=50+Math.random()*60;
+      s.style.left=(f.offsetLeft+f.offsetWidth/2)+'px';s.style.top=(f.offsetTop+f.offsetHeight*.25)+'px';
+      s.style.setProperty('--dx',Math.cos(a)*r+'px');s.style.setProperty('--dy',Math.sin(a)*r-30+'px');s.style.animationDelay=(i*.03)+'s';
+      f.parentNode.appendChild(s);setTimeout(function(x){x.remove()},1300,s);}
+  }
+  f.addEventListener('click',function(){ if(busy) return; busy=true; f.classList.add('jump'); drum(); setTimeout(sparks,300);
+    setTimeout(function(){f.classList.remove('jump');busy=false},950); });
 })();
 </script>
 </body>
