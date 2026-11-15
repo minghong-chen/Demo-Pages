@@ -73,3 +73,10 @@ docs/
 
 - 舞狮大肥鱼动画来自 [PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet)，MIT 许可，许可文本见 [`docs/assets/dafeiyu-wushi.LICENSE.txt`](docs/assets/dafeiyu-wushi.LICENSE.txt)。
 - 彩蛋音效来自柚子社《千恋万花》中芳乃的“Ciallo～”，版权归原作者所有。
+
+## 免责声明
+
+- 本仓库仅作为个人技术学习、研究与欣赏，不用于任何商业用途。
+- 站内收录的所有 Demo（`docs/demos/` 下的 HTML 文件）均来源于**网络**，**版权均属于原作者**；本站只做收集与展示，未对其内容做修改。
+- 首页引用的第三方素材（舞狮大肥鱼动画、“Ciallo～”音效等）版权同样归原作者所有，出处见上方致谢。
+- 如果原作者认为本仓库侵犯了您的权益，请通过 GitHub Issue 联系我，我会立刻删除相关文件。
