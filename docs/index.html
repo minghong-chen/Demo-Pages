@@ -480,7 +480,7 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
     });
   }
   if(!reduce){
-    addEventListener('mousemove', function(e){ mx = e.clientX/innerWidth-.5; my = e.clientY/innerHeight-.5; requestAnimationFrame(para); });
+    addEventListener('mousemove', function(e){ if(document.documentElement.dataset.theme === 'night'){ if(mx||my){ mx = my = 0; requestAnimationFrame(para); } return; } mx = e.clientX/innerWidth-.5; my = e.clientY/innerHeight-.5; requestAnimationFrame(para); });
     addEventListener('scroll', function(){ sy = scrollY; if(sy < innerHeight*1.2) requestAnimationFrame(para); }, {passive:true});
   }
 
@@ -547,7 +547,6 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
       F.push({x:x, y:y, px:x, py:y, vx:Math.cos(an)*v, vy:Math.sin(an)*v, life:0, max:55+Math.random()*35, c:k%3 ? c1 : c2, tw:Math.random()<.35});
     }
     if(F.length > 600) F.splice(0, F.length-600);
-    P.forEach(function(p){ var dx = p.x-x, dy = p.y-y, d = Math.hypot(dx,dy)||1; if(d < 220){ var f = (1-d/220)*5; p.ex += dx/d*f; p.ey += dy/d*f; } });
   }
   function drawFW(){
     if(!R.length && !F.length && !FL.length) return;
@@ -590,6 +589,37 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
     R.push({x:tx + (Math.random()-.5)*60, y:sy0, tx:tx, ty:ty, t:0, n:Math.max(28, Math.min(60, (sy0-ty)/11|0)), lx:null, ly:null});
   }
   var nextFW = 40;
+  // 夜里的萤火虫：数量少，匀速慢慢飘，在草丛上方一明一灭
+  var FFS = [];
+  function mkFF(){
+    return {x:Math.random()*W, y:H*(.5 + Math.random()*.42), a:Math.random()*6.28, sp:.22 + Math.random()*.12,
+            ph:Math.random(), per:240 + Math.random()*180, turn:(Math.random()-.5)*.004};
+  }
+  function drawFireflies(){
+    var n = W < 700 ? 6 : 11;
+    while(FFS.length < n) FFS.push(mkFF());
+    FFS.length = n;
+    cx.save(); cx.globalCompositeOperation = 'lighter';
+    FFS.forEach(function(f){
+      // 方向缓慢转动，速度恒定，不受风和烟火影响
+      f.turn += (Math.random()-.5)*.0006; f.turn = Math.max(-.006, Math.min(.006, f.turn));
+      f.a += f.turn;
+      f.x += Math.cos(f.a)*f.sp; f.y += Math.sin(f.a)*f.sp*.6;
+      if(f.y < H*.45){ f.a = Math.abs(f.a) % 6.28; if(Math.sin(f.a) < 0) f.a = -f.a; }
+      if(f.y > H*.96){ if(Math.sin(f.a) > 0) f.a = -f.a; }
+      if(f.x < -20) f.x = W+20; if(f.x > W+20) f.x = -20;
+      // 一明一灭：大部分时间暗着，慢慢亮起再慢慢熄
+      f.ph += 1/f.per; var t = f.ph % 1, b = t < .45 ? Math.pow(Math.sin(t/.45*Math.PI), 2) : 0;
+      var glow = .08 + .92*b, r = 9 + 7*b;
+      var g = cx.createRadialGradient(f.x,f.y,0,f.x,f.y,r);
+      g.addColorStop(0,'rgba(226,255,140,'+(.85*glow).toFixed(3)+')');
+      g.addColorStop(.25,'rgba(190,240,90,'+(.45*glow).toFixed(3)+')');
+      g.addColorStop(1,'rgba(160,220,60,0)');
+      cx.fillStyle = g; cx.beginPath(); cx.arc(f.x,f.y,r,0,6.28); cx.fill();
+      cx.fillStyle = 'rgba(245,255,200,'+(.25 + .75*glow).toFixed(3)+')'; cx.beginPath(); cx.arc(f.x,f.y,1.3,0,6.28); cx.fill();
+    });
+    cx.restore();
+  }
   var gust = 0, tick = 0, visible = true;
   // 鼠标风场：指针划过时带起一阵风，花瓣被推开、打旋，并留下几道手绘风线
   var ptr = {x:-999, y:-999, vx:0, vy:0, on:false, t:0}, S = [];
@@ -643,7 +673,7 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
       if(w.bend > .3){ cx.beginPath(); cx.arc(hx+nx*6, hy+ny*6, 6, 0, Math.PI*1.3); cx.stroke(); }
     }
     var night = document.documentElement.dataset.theme === 'night';
-    P.forEach(function(p,i){
+    if(night) drawFireflies(); else P.forEach(function(p,i){
       p.w += .03; p.a += p.va;
       if(live && spd > 1){
         var ddx = p.x-ptr.x, ddy = p.y-ptr.y, dd = Math.hypot(ddx,ddy);
@@ -653,19 +683,14 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
           p.va += (Math.random()-.5)*ff*.02; }
       }
       p.ex *= .95; p.ey *= .95; p.va *= .995;
-      var dr = night ? .25 : 1;
-      p.x += (p.vx + gust)*dr + Math.cos(p.w)*.4 + p.ex;
-      p.y += p.vy*dr + Math.sin(p.w)*.5 + p.ey;
+      p.x += p.vx + gust + Math.cos(p.w)*.4 + p.ex;
+      p.y += p.vy + Math.sin(p.w)*.5 + p.ey;
       if(p.x > W+30 || p.x < -W*.4 || p.y > H+30 || p.y < -30) P[i] = mk(false);
       cx.save(); cx.translate(p.x,p.y); cx.rotate(p.a);
-      if(p.seed && !night){ // 蒲公英种子
+      if(p.seed){ // 蒲公英种子
         cx.strokeStyle = 'rgba(255,255,255,.85)'; cx.lineWidth = .8;
         cx.beginPath(); cx.moveTo(0,0); cx.lineTo(0,p.s*1.6); cx.stroke();
         for(var k=0;k<7;k++){ var an = -Math.PI/2 + (k-3)*.32; cx.beginPath(); cx.moveTo(0,0); cx.lineTo(Math.cos(an)*p.s, Math.sin(an)*p.s); cx.stroke(); }
-      } else if(night){ // 夜里花瓣换成萤火虫
-        var gl = .55 + .45*Math.sin(p.w*2.2 + p.a);
-        cx.globalAlpha = gl; cx.fillStyle = 'rgba(255,240,150,.25)'; cx.beginPath(); cx.arc(0,0,p.s*1.6,0,6.28); cx.fill();
-        cx.fillStyle = '#fff6b0'; cx.beginPath(); cx.arc(0,0,p.s*.45,0,6.28); cx.fill();
       } else { // 花瓣
         cx.fillStyle = p.c; cx.globalAlpha = .9;
         cx.beginPath(); cx.ellipse(0,0,p.s,p.s*.55*Math.abs(Math.cos(p.w*1.3))+.6,0,0,6.28); cx.fill();
