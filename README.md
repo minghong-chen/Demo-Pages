@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="docs/assets/hero.webp" alt="风吹过的地方，藏着八个小世界" width="100%">
+<img src="docs/assets/hero.webp" alt="风吹过的地方，藏着九个小世界" width="100%">
 
 # 小&陈的 Demo 收藏夹 · 夏日画廊
 
-**风吹过的地方，藏着八个小世界。**
+**风吹过的地方，藏着九个小世界。**
 
 一间收藏交互式 Web Demo 的小屋。每一张卡片都是一个单文件页面，点开就能在浏览器里走进去。
 
@@ -14,9 +14,9 @@
 
 ---
 
-## 八个小世界
+## 九个小世界
 
-由不同 AI 写出的作品，按模型分成三章。
+由不同 AI 写出的作品，按模型分成三章；作者不详的放在第四章。
 
 ### 第一章 · Claude Fable 5.2 · 五个故事
 
@@ -43,6 +43,12 @@
 
 > 💡 第三章里藏着一个小彩蛋，记得去点一点。
 
+### 第四章 · 佚名之作 · 不知哪阵风吹来的
+
+| Demo | 简介 |
+| --- | --- |
+| [流浪地球 Earth Migration](https://minghong-chen.github.io/Demo-Pages/demos/earth-migration/) | 万台行星发动机点火，镜头从地表一路飞出太阳系，直到整条银河。可看 2 分半的电影自动播放，也能自由漫游。 |
+
 ## 首页的小细节
 
 - 🎨 **吉卜力水彩首图**：AI 生成后超分辨率放大，配合滚动与鼠标视差。
@@ -67,7 +73,7 @@ python3 -m http.server 8000
 docs/
 ├── index.html      # 画廊首页（GitHub Pages 从 docs/ 发布）
 ├── assets/         # 首图、缩略图、动画与音效
-└── demos/          # 八个 Demo，每个一个文件夹
+└── demos/          # 九个 Demo，每个一个文件夹
 ```
 
 ## 致谢
