@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="docs/assets/hero.webp" alt="风吹过的地方，藏着七个小世界" width="100%">
+<img src="docs/assets/hero.webp" alt="风吹过的地方，藏着八个小世界" width="100%">
 
 # 小&陈的 Demo 收藏夹 · 夏日画廊
 
-**风吹过的地方，藏着七个小世界。**
+**风吹过的地方，藏着八个小世界。**
 
 一间收藏交互式 Web Demo 的小屋。每一张卡片都是一个单文件页面，点开就能在浏览器里走进去。
 
@@ -14,11 +14,11 @@
 
 ---
 
-## 七个小世界
+## 八个小世界
 
 由不同 AI 写出的作品，按模型分成三章。
 
-### 第一章 · Claude Fable 5.2 · 四个故事
+### 第一章 · Claude Fable 5.2 · 五个故事
 
 | Demo | 简介 |
 | --- | --- |
@@ -26,6 +26,7 @@
 | [彩绘山谷 Painted Valley](https://minghong-chen.github.io/Demo-Pages/demos/painted-valley/) | 手绘质感的山谷漫游。WASD 行走，Shift 奔跑，V 切换第一人称，T 调整时刻。 |
 | [鹈鹕的漫漫归途 Pelican Riding a Bicycle](https://minghong-chen.github.io/Demo-Pages/demos/pelican-riding-a-bicycle/) | 一只鹈鹕骑着自行车踏上旅途，像一部实时渲染的小短片。 |
 | [盐线：雨港迷航 Saltline](https://minghong-chen.github.io/Demo-Pages/demos/saltline/) | 雨夜港口，终端逐行亮起，一段在盐雾与灯光中展开的互动叙事。 |
+| [深海花园 Abyssal Garden](https://minghong-chen.github.io/Demo-Pages/demos/abyssal-garden/) | 在浏览器里潜进梦一样的海底：摇曳的海藻林、穿水而下的光柱、沉船与蝠鲼，全由 WebGPU 代码生成。 |
 
 ### 第二章 · Claude Opus 5.5 · 两段骑行
 
@@ -66,7 +67,7 @@ python3 -m http.server 8000
 docs/
 ├── index.html      # 画廊首页（GitHub Pages 从 docs/ 发布）
 ├── assets/         # 首图、缩略图、动画与音效
-└── demos/          # 七个 Demo，每个一个文件夹
+└── demos/          # 八个 Demo，每个一个文件夹
 ```
 
 ## 致谢
