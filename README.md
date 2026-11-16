@@ -18,7 +18,7 @@
 
 由不同 AI 写出的作品，按模型分成三章；作者不详的放在第四章。
 
-### 第一章 · Claude Fable 5.2 · 五个故事
+### 第一章 · Claude Fable 5.2 · 六个故事
 
 | Demo | 简介 |
 | --- | --- |
@@ -27,6 +27,7 @@
 | [鹈鹕的漫漫归途 Pelican Riding a Bicycle](https://minghong-chen.github.io/Demo-Pages/demos/pelican-riding-a-bicycle/) | 一只鹈鹕骑着自行车踏上旅途，像一部实时渲染的小短片。 |
 | [盐线：雨港迷航 Saltline](https://minghong-chen.github.io/Demo-Pages/demos/saltline/) | 雨夜港口，终端逐行亮起，一段在盐雾与灯光中展开的互动叙事。 |
 | [深海花园 Abyssal Garden](https://minghong-chen.github.io/Demo-Pages/demos/abyssal-garden/) | 在浏览器里潜进梦一样的海底：摇曳的海藻林、穿水而下的光柱、沉船与蝠鲼，全由 WebGPU 代码生成。 |
+| [羽毛 Feather](https://minghong-chen.github.io/Demo-Pages/demos/feather/) | 一只紫喉宝石蜂鸟停在青苔小枝上，上万片羽毛根根可见；会眨眼、抖羽、转头盯你，点一下撒颗种子它会去啄。 |
 
 ### 第二章 · Claude Opus 5.5 · 两段骑行
 
@@ -48,7 +49,6 @@
 | Demo | 简介 |
 | --- | --- |
 | [流浪地球 Earth Migration](https://minghong-chen.github.io/Demo-Pages/demos/earth-migration/) | 万台行星发动机点火，镜头从地表一路飞出太阳系，直到整条银河。可看 2 分半的电影自动播放，也能自由漫游。 |
-| [羽毛 Feather](https://minghong-chen.github.io/Demo-Pages/demos/feather/) | 一只紫喉宝石蜂鸟停在青苔小枝上，上万片羽毛根根可见；会眨眼、抖羽、转头盯你，点一下撒颗种子它会去啄。 |
 
 ## 首页的小细节
 
@@ -80,7 +80,7 @@ docs/
 ## 致谢
 
 - 舞狮大肥鱼动画来自 [PC2005-cloud/dsh-pet](https://github.com/PC2005-cloud/dsh-pet)，MIT 许可，许可文本见 [`docs/assets/dafeiyu-wushi.LICENSE.txt`](docs/assets/dafeiyu-wushi.LICENSE.txt)。
-- 第四章「羽毛 Feather」来自 Theo Tillberg 的 [ttillberg/codevember-2026](https://github.com/ttillberg/codevember-2026)（Codevember 2026 第 12 天），MIT 许可，许可文本见 [`docs/demos/feather/LICENSE.txt`](docs/demos/feather/LICENSE.txt)。
+- 第一章「羽毛 Feather」来自 Theo Tillberg 的 [ttillberg/codevember-2026](https://github.com/ttillberg/codevember-2026)（Codevember 2026 第 12 天，作者注明由 Claude Fable 5.2 与 Opus 5.5 协作完成），MIT 许可，许可文本见 [`docs/demos/feather/LICENSE.txt`](docs/demos/feather/LICENSE.txt)。
 - 彩蛋音效来自柚子社《千恋万花》中芳乃的“Ciallo～”，版权归原作者所有。
 
 ## 免责声明

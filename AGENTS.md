@@ -42,11 +42,11 @@ Demo 仓库里**一个文件夹 = 一个模型 = 网站上的一章**，文件�
 | `Claude Fable 5.2/Pelican Riding a Bicycle · 鹈鹕的漫漫归途.html` | `docs/demos/pelican-riding-a-bicycle/index.html` | `t-pelican.webp` | 第一章 |
 | `Claude Fable 5.2/Saltline · 盐线：雨港迷航.html` | `docs/demos/saltline/index.html` | `t-saltline.webp` | 第一章 |
 | `Claude Fable 5.2/Abyssal Garden · 深海花园.html` | `docs/demos/abyssal-garden/index.html` | `t-abyssal.webp` | 第一章 |
+| `Claude Fable 5.2/Feather · 羽毛.html` | `docs/demos/feather/index.html`（旁边保留 `LICENSE.txt`，MIT） | `t-feather.webp` | 第一章 |
 | `Claude Opus 5.5/Pelican Pedal Tales · 鹈鹕骑遇记.html` | `docs/demos/pelican-pedal-tales/index.html` | `t-pedal.webp` | 第二章 |
 | `Claude Opus 5.5/Summer Cycle · 夏日骑行.html` | `docs/demos/summer-cycle/index.html` | `t-summer.webp` | 第二章 |
 | `Deepseek-V4.1-Flash-1017/Wind Bell Bay · 风铃湾.html` | `docs/demos/wind-bell-bay/index.html` | `t-windbell.webp` | 第三章（Deepseek V4.1 Flash） |
 | `佚名/Earth Migration · 流浪地球.html` | `docs/demos/earth-migration/index.html` | `t-earth.webp` | 第四章（佚名之作） |
-| `佚名/Feather · 羽毛.html` | `docs/demos/feather/index.html`（旁边保留 `LICENSE.txt`） | `t-feather.webp` | 第四章（佚名之作） |
 
 - 网站上的案例文件与 Demo 仓库**逐字节相同**，只是改名放进各自文件夹。**不要修改案例本身的代码**。
 - 作者不详（不知是哪个 AI 还是人做的）的案例统一放最后一章「佚名之作」，副标题“不知哪阵风吹来的”，导航叫“佚名”；首页“由不同 AI 写出”的说法不要改。Demo 仓库里对应文件夹叫 `佚名`。
