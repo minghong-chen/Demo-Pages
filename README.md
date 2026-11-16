@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="docs/assets/hero.webp" alt="风吹过的地方，藏着十一个小世界" width="100%">
+<img src="docs/assets/hero.webp" alt="风吹过的地方，藏着12个小世界" width="100%">
 
 # 小&陈的 Demo 收藏夹 · 夏日画廊
 
-**风吹过的地方，藏着十一个小世界。**
+**风吹过的地方，藏着12个小世界。**
 
 一间收藏交互式 Web Demo 的小屋。每一张卡片都是一个单文件页面，点开就能在浏览器里走进去。
 
@@ -14,7 +14,7 @@
 
 ---
 
-## 十一个小世界
+## 12个小世界
 
 由不同 AI 写出的作品，按模型分成三章；作者不详的放在第四章。
 
@@ -50,6 +50,7 @@
 | --- | --- |
 | [流浪地球 Earth Migration](https://minghong-chen.github.io/Demo-Pages/demos/earth-migration/) | 万台行星发动机点火，镜头从地表一路飞出太阳系，直到整条银河。可看 2 分半的电影自动播放，也能自由漫游。 |
 | [凤凰 Phoenix Flame](https://minghong-chen.github.io/Demo-Pages/demos/phoenix-flame/) | 一只火焰凤凰在天空里振翅飞行，可追随或环绕观看，天色在黎明、白昼、黄昏和夜晚间切换；连点它三下试试。 |
+| [蛛网 Tension](https://minghong-chen.github.io/Demo-Pages/demos/tension/) | 两根细枝间挂着一张缀满露珠的圆网，有四种天气可切换；拉一根丝再松手，蜘蛛会循着丝跑过来，拉太狠丝会断。 |
 
 ## 首页的小细节
 
@@ -75,7 +76,7 @@ python3 -m http.server 8000
 docs/
 ├── index.html      # 画廊首页（GitHub Pages 从 docs/ 发布）
 ├── assets/         # 首图、缩略图、动画与音效
-└── demos/          # 十一个 Demo，每个一个文件夹
+└── demos/          # 12个 Demo，每个一个文件夹
 ```
 
 ## 致谢
