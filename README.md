@@ -18,7 +18,7 @@
 
 由不同 AI 写出的作品，按模型分成三章；作者不详的放在第四章。
 
-### 第一章 · Claude Fable 5.2 · 六个故事
+### 第一章 · Claude Fable 5.2 · 6个故事
 
 | Demo | 简介 |
 | --- | --- |
@@ -29,14 +29,14 @@
 | [深海花园 Abyssal Garden](https://minghong-chen.github.io/Demo-Pages/demos/abyssal-garden/) | 在浏览器里潜进梦一样的海底：摇曳的海藻林、穿水而下的光柱、沉船与蝠鲼，全由 WebGPU 代码生成。 |
 | [羽毛 Feather](https://minghong-chen.github.io/Demo-Pages/demos/feather/) | 一只紫喉宝石蜂鸟停在青苔小枝上，上万片羽毛根根可见；会眨眼、抖羽、转头盯你，点一下撒颗种子它会去啄。 |
 
-### 第二章 · Claude Opus 5.5 · 两段骑行
+### 第二章 · Claude Opus 5.5 · 2段骑行
 
 | Demo | 简介 |
 | --- | --- |
 | [鹈鹕骑遇记 Pelican Pedal Tales](https://minghong-chen.github.io/Demo-Pages/demos/pelican-pedal-tales/) | 戴头盔、围红围巾的白鹈鹕沿海岸追鱼：IK 骨骼、布料围巾、Gerstner 海浪与昼夜循环。 |
 | [夏日骑行 Summer Cycle](https://minghong-chen.github.io/Demo-Pages/demos/summer-cycle/) | 夏日午后的公路骑行，风景像纸卷一样在眼前缓缓展开。 |
 
-### 第三章 · Deepseek V4.1 Flash · 一座云上小镇
+### 第三章 · Deepseek V4.1 Flash · 1座云上小镇
 
 | Demo | 简介 |
 | --- | --- |
