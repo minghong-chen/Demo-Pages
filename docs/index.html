@@ -6,11 +6,11 @@
 <title>小&陈的 Demo 收藏夹 · 夏日画廊</title>
 <meta name="description" content="一座手绘风格的小画廊，收藏 AI 生成的交互式 Web Demo，点开卡片即可在线体验。">
 <script>
-/* 白天 / 黑夜：记住上次的选择，没选过就按本地时间（19 点到 6 点算夜里） */
+/* 白天 / 黄昏 / 黑夜：记住上次的选择，没选过就按访客本地时间（17–19 点黄昏，19 点到 6 点夜里） */
 (function(){var t;try{t=localStorage.getItem('theme')}catch(e){}
-if(t!=='day'&&t!=='night'){var h=new Date().getHours();t=(h>=19||h<6)?'night':'day'}
+if(t!=='day'&&t!=='dusk'&&t!=='night'){var h=new Date().getHours();t=(h>=19||h<6)?'night':(h>=17?'dusk':'day')}
 document.documentElement.dataset.theme=t;
-var l=document.createElement('link');l.rel='preload';l.as='image';l.href=t==='night'?'assets/hero-night.webp':'assets/hero.webp';l.fetchPriority='high';document.head.appendChild(l);})();
+var l=document.createElement('link');l.rel='preload';l.as='image';l.href='assets/'+({day:'hero',dusk:'hero-dusk',night:'hero-night'})[t]+'.webp';l.fetchPriority='high';document.head.appendChild(l);})();
 </script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" media="print" onload="this.media='all'">
 <style>
@@ -280,6 +280,12 @@ var l=document.createElement('link');l.rel='preload';l.as='image';l.href=t==='ni
     --paper:#18203a;--paper-2:#222b48;--ink:#ece5d3;--ink-soft:#a8afc6;--moss:#a5cf7f;--leaf:#8fb86a;--sky:#a9c8ff;
     --line:rgba(255,255,255,.1);--shadow:0 2px 0 rgba(0,0,0,.2),0 18px 40px -22px rgba(0,0,0,.8);
   }
+  html[data-theme=dusk]{
+    --paper:#f8e9d6;--paper-2:#f1dcc3;--ink:#3d2c27;--ink-soft:#7a5e52;--sky:#7b5b9c;--sun:#e8823c;
+  }
+  html[data-theme=dusk] .hero .bg{background-image:url(assets/hero-dusk.webp)}
+  html[data-theme=dusk] .sunbeam{background:radial-gradient(45% 45% at 8% 58%,rgba(255,190,120,.35),transparent 65%)}
+  html[data-theme=dusk] .thumb img{filter:saturate(1.05) sepia(.12)}
   body{transition:background-color .6s,color .6s}
   ::view-transition-old(root),::view-transition-new(root){animation-duration:1.4s;animation-timing-function:cubic-bezier(.45,0,.25,1)}
   ::view-transition-old(root){animation-name:vt-out}
@@ -306,7 +312,9 @@ var l=document.createElement('link');l.rel='preload';l.as='image';l.href=t==='ni
     display:grid;place-items:center;padding:0;transition:transform .5s cubic-bezier(.2,.8,.2,1),background .3s}
   .theme:hover{background:rgba(127,127,127,.12);transform:rotate(-20deg)}
   .theme svg{width:17px;height:17px}
-  .theme .moon{display:none}
+  .theme .moon,.theme .dusk{display:none}
+  html[data-theme=dusk] .theme .sun{display:none}
+  html[data-theme=dusk] .theme .dusk{display:block}
   html[data-theme=night] .theme .sun{display:none}
   html[data-theme=night] .theme .moon{display:block}
 </style>
@@ -320,8 +328,9 @@ var l=document.createElement('link');l.rel='preload';l.as='image';l.href=t==='ni
   <a class="l" href="#ch3">Deepseek</a>
   <a class="l" href="#ch4">佚名</a>
   <a class="l" href="#about">关于</a>
-  <button class="theme" id="theme" type="button" aria-label="切换白天和黑夜" title="切换白天 / 黑夜">
+  <button class="theme" id="theme" type="button" aria-label="切换白天、黄昏和黑夜" title="切换白天 / 黄昏 / 黑夜">
     <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+    <svg class="dusk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6.5 16a5.5 5.5 0 0 1 11 0"/><path d="M2.5 16h19M5 20h14M12 5.5v2.2M4.6 9.2l1.5 1.5M19.4 9.2l-1.5 1.5"/></svg>
     <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
   </button>
   <a class="gh" href="https://github.com/minghong-chen/Demo-Pages" rel="noopener">GitHub</a>
@@ -347,7 +356,7 @@ var l=document.createElement('link');l.rel='preload';l.as='image';l.href=t==='ni
 <script>
 /* 白天 / 黑夜切换：先把目标首图下好再换，避免闪空 */
 (function(){
-  var b=document.getElementById('theme'),root=document.documentElement;
+  var b=document.getElementById('theme'),root=document.documentElement,IMG={day:'assets/hero.webp',dusk:'assets/hero-dusk.webp',night:'assets/hero-night.webp'};
   function set(t){
     var im=new Image(),done=0;
     function apply(){ if(done) return; done=1;
@@ -356,17 +365,18 @@ var l=document.createElement('link');l.rel='preload';l.as='image';l.href=t==='ni
       if(document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.startViewTransition(sw);
       else { root.classList.add('theming'); sw(); setTimeout(function(){ root.classList.remove('theming'); },1300); }
       try{localStorage.setItem('theme',t)}catch(e){} b.setAttribute('aria-pressed',t==='night'); }
-    im.onload=im.onerror=apply; im.src=t==='night'?'assets/hero-night.webp':'assets/hero.webp'; if(im.complete) apply(); setTimeout(apply,2500);
+    im.onload=im.onerror=apply; im.src=IMG[t]; if(im.complete) apply(); setTimeout(apply,2500);
   }
-  b.addEventListener('click',function(){ set(root.dataset.theme==='night'?'day':'night'); });
+  b.addEventListener('click',function(){ set(({day:'dusk',dusk:'night',night:'day'})[root.dataset.theme]||'day'); });
   // 白天空闲时顺手把夜景图缓存好，切换就是秒换
-  (window.requestIdleCallback||setTimeout)(function(){ new Image().src=root.dataset.theme==='night'?'assets/hero.webp':'assets/hero-night.webp'; },3000);
+  // 空闲时把另外两张首图缓存好，切换就是秒换
+  (window.requestIdleCallback||setTimeout)(function(){ for(var k in IMG) if(k!==root.dataset.theme) new Image().src=IMG[k]; },3000);
 })();
 </script>
 
 <script>
 (function(){var h=document.getElementById('top'),done=0;function go(){if(!done){done=1;h.classList.add('ready')}}
-var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.dataset.theme==='night'?'assets/hero-night.webp':'assets/hero.webp';if(im.complete)go();setTimeout(go,4000)})();
+var im=new Image();im.onload=im.onerror=go;im.src='assets/'+({day:'hero',dusk:'hero-dusk',night:'hero-night'})[document.documentElement.dataset.theme]+'.webp';if(im.complete)go();setTimeout(go,4000)})();
 </script>
 
 
