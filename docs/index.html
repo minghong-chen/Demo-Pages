@@ -566,11 +566,52 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
   var N = W < 700 ? 26 : 48;
   for(var j=0;j<N;j++) P.push(mk(true));
   // 黑夜：首屏自动放烟火
+
+  /* 烟火音效：Web Audio 实时合成（升空的嘶声、远处的闷响、余烬噼啪），无音频文件。
+     浏览器规定要先有一次点击/按键才能出声，所以访客碰过页面后才开始响；切到别的标签页时静音 */
+  var FS = (function(){
+    var ac = null, out = null, nb = null;
+    function init(){
+      if(ac) return; var C = window.AudioContext || window.webkitAudioContext; if(!C) return;
+      ac = new C(); var comp = ac.createDynamicsCompressor(); out = ac.createGain(); out.gain.value = .55;
+      out.connect(comp); comp.connect(ac.destination);
+      nb = ac.createBuffer(1, ac.sampleRate*2, ac.sampleRate); var d = nb.getChannelData(0);
+      for(var i=0;i<d.length;i++) d[i] = Math.random()*2-1;
+    }
+    ['pointerdown','keydown','touchstart'].forEach(function(ev){ addEventListener(ev, function(){ init(); if(ac && ac.state === 'suspended') ac.resume(); }, {passive:true}); });
+    function ok(){ return ac && ac.state === 'running' && !document.hidden; }
+    function pan(x){ var p = ac.createStereoPanner ? ac.createStereoPanner() : null; if(p){ p.pan.value = Math.max(-.7, Math.min(.7, (x/W*2-1)*.7)); p.connect(out); return p; } return out; }
+    function noise(t, dur, dst){ var n = ac.createBufferSource(); n.buffer = nb; n.loop = true; n.start(t, Math.random()*1.5, dur+.05); n.stop(t+dur+.05); n.connect(dst); }
+    return {
+      launch: function(x, secs){ if(!ok()) return; var t = ac.currentTime, dst = pan(x);
+        var bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 6;
+        bp.frequency.setValueAtTime(700, t); bp.frequency.exponentialRampToValueAtTime(2400, t+secs);
+        var g = ac.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.09, t+.25);
+        g.gain.setValueAtTime(.09, t+secs*.8); g.gain.linearRampToValueAtTime(0, t+secs);
+        bp.connect(g); g.connect(dst); noise(t, secs, bp); },
+      boom: function(x){ if(!ok()) return; var t = ac.currentTime + .05, dst = pan(x);
+        // 低沉的“咚”
+        var o = ac.createOscillator(), og = ac.createGain(); o.type = 'sine';
+        o.frequency.setValueAtTime(95, t); o.frequency.exponentialRampToValueAtTime(38, t+.5);
+        og.gain.setValueAtTime(.0001, t); og.gain.exponentialRampToValueAtTime(.5, t+.015); og.gain.exponentialRampToValueAtTime(.0001, t+.7);
+        o.connect(og); og.connect(dst); o.start(t); o.stop(t+.75);
+        // 炸开的气浪
+        var lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(1600, t); lp.frequency.exponentialRampToValueAtTime(220, t+1.4);
+        var ng = ac.createGain(); ng.gain.setValueAtTime(.0001, t); ng.gain.exponentialRampToValueAtTime(.45, t+.02); ng.gain.exponentialRampToValueAtTime(.0001, t+1.6);
+        lp.connect(ng); ng.connect(dst); noise(t, 1.6, lp);
+        // 余烬噼啪
+        var hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 2500; hp.connect(dst);
+        for(var k=0;k<14;k++){ var tc = t + 1 + Math.random()*2.6, cg = ac.createGain();
+          cg.gain.setValueAtTime(.0001, tc); cg.gain.exponentialRampToValueAtTime(.03+Math.random()*.05, tc+.004); cg.gain.exponentialRampToValueAtTime(.0001, tc+.03+Math.random()*.03);
+          cg.connect(hp); noise(tc, .07, cg); }
+      }
+    };
+  })();
   var R = [], F = [], FL = [], fwCols = ['#ff4d5e','#ff9f1c','#ffd60a','#2ea8ff','#ff5fa8','#5fd35f','#a66bff'];
 
   function burst(x,y){
     var c1 = fwCols[(Math.random()*fwCols.length)|0], c2 = fwCols[(Math.random()*fwCols.length)|0], n = 64;
-    FL.push({x:x, y:y, life:0, c:c1});
+    FL.push({x:x, y:y, life:0, c:c1}); FS.boom(x);
     for(var k=0;k<n;k++){
       var an = k/n*6.28 + Math.random()*.1, v = (1.05 + Math.random()*1.2)*fwScale();
       F.push({x:x, y:y, px:x, py:y, vx:Math.cos(an)*v, vy:Math.sin(an)*v, life:0, max:210+Math.random()*90, c:k%3 ? c1 : c2, tw:Math.random()<.35});
@@ -617,7 +658,8 @@ var im=new Image();im.onload=im.onerror=go;im.src=document.documentElement.datas
   function fwScale(){ return Math.max(.45, Math.min(1, W/1400)); }
   function launch(){
     var tx = W*(.12 + Math.random()*.76), ty = H*(.1 + Math.random()*.32), sy0 = H - 10;
-    R.push({x:tx + (Math.random()-.5)*60, y:sy0, tx:tx, ty:ty, t:0, n:Math.max(70, Math.min(130, (sy0-ty)/4.2|0)), lx:null, ly:null});
+    var rn = Math.max(70, Math.min(130, (sy0-ty)/4.2|0));
+    R.push({x:tx + (Math.random()-.5)*60, y:sy0, tx:tx, ty:ty, t:0, n:rn, lx:null, ly:null}); FS.launch(tx, rn/60);
   }
   var nextFW = 40;
   // 夜里的萤火虫：数量少，匀速慢慢飘，在草丛上方一明一灭
