@@ -246,6 +246,27 @@ var l=document.createElement('link');l.rel='preload';l.as='image';l.href='assets
     background:radial-gradient(circle,#ffd85a 0 35%,transparent 36%),conic-gradient(from 0deg,transparent 0 40deg,#e8a33c 40deg 50deg,transparent 50deg 130deg,#e8a33c 130deg 140deg,transparent 140deg 220deg,#c4473a 220deg 230deg,transparent 230deg 310deg,#c4473a 310deg 320deg,transparent 320deg);
     border-radius:50%;animation:spark .9s ease-out forwards}
   @keyframes spark{from{opacity:1;transform:translate(0,0) scale(.6)}to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.6) rotate(180deg)}}
+  /* ---------- 纸飞机：随便去一个世界 ---------- */
+  .plane{position:fixed;left:22px;bottom:22px;z-index:55;width:58px;height:58px;padding:0;border:0;background:none;cursor:pointer;
+    -webkit-tap-highlight-color:transparent}
+  .plane svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 8px 10px rgba(30,50,80,.28));
+    animation:bob 4.2s ease-in-out infinite;transform-origin:50% 60%}
+  .plane:hover svg{animation-duration:1.8s}
+  .plane.gone svg{visibility:hidden;animation:none}
+  @keyframes bob{0%,100%{transform:translate(0,0) rotate(-4deg)}50%{transform:translate(2px,-6px) rotate(3deg)}}
+  .plane .hint{position:absolute;left:4px;bottom:calc(100% + 8px);white-space:nowrap;background:var(--ink);color:var(--paper);font-size:12.5px;
+    padding:5px 12px;border-radius:8px;opacity:0;transform:translateY(6px);transition:all .4s;pointer-events:none;font-family:var(--hand)}
+  @media (hover:hover){.plane:hover .hint{opacity:1;transform:none}}
+  .flight{position:fixed;inset:0;z-index:70;pointer-events:none;overflow:hidden}
+  .flight svg{position:absolute;left:0;top:0;width:58px;height:58px;overflow:visible;filter:drop-shadow(0 10px 12px rgba(30,50,80,.25))}
+  .flight i{position:absolute;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%;background:rgba(255,255,255,.85);
+    box-shadow:0 0 0 1px rgba(80,100,130,.18);animation:trail 1.1s ease-out forwards}
+  @keyframes trail{to{opacity:0;transform:scale(.3)}}
+  .flight .dest{position:absolute;left:50%;bottom:16%;transform:translateX(-50%);background:var(--paper);color:var(--ink);font-family:var(--hand);
+    font-size:17px;letter-spacing:.08em;padding:8px 20px;border-radius:999px;box-shadow:0 12px 30px -12px rgba(30,50,80,.5);opacity:0;transition:opacity .5s}
+  .flight .dest.show{opacity:1}
+  html[data-theme=night] .plane svg{filter:drop-shadow(0 0 10px rgba(255,236,180,.28)) drop-shadow(0 8px 10px rgba(0,0,0,.4))}
+  @media (max-width:760px){.plane{left:12px;bottom:16px;width:48px;height:48px}}
   /* ---------- 音乐按钮 ---------- */
   .music{position:fixed;right:22px;bottom:22px;z-index:55;display:flex;align-items:center;gap:10px;
     padding:10px 16px 10px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.7);cursor:pointer;
@@ -509,6 +530,7 @@ var im=new Image();im.onload=im.onerror=go;im.src='assets/'+({day:'hero',dusk:'h
 
 
 <canvas id="leaves" aria-hidden="true"></canvas>
+<button class="plane" id="plane" aria-label="纸飞机：随便去一个世界"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M4 30 L60 8 L38 56 L30 37 Z" fill="#fffaf0" stroke="#5b6b7a" stroke-width="1.6" stroke-linejoin="round"/><path d="M60 8 L30 37 L28 50 L38 40" fill="#e9e1cd" stroke="#5b6b7a" stroke-width="1.6" stroke-linejoin="round"/><path d="M60 8 L30 37" stroke="#c4473a" stroke-width="1.2" stroke-dasharray="2 3"/></svg><span class="hint">随风去一个世界</span></button>
 <button class="music" id="music" aria-label="背景音乐开关">
   <span class="bars"><i></i><i></i><i></i><i></i></span><span class="lbl">听听风</span>
   <span class="hint" id="mhint">点一下，放一段原创小曲</span>
@@ -973,6 +995,46 @@ var im=new Image();im.onload=im.onerror=go;im.src='assets/'+({day:'hero',dusk:'h
   f.addEventListener('click',function(){ f.classList.add('poked'); try{localStorage.setItem('dfyPoked','1')}catch(e){}
     if(busy) return; busy=true; f.classList.add('jump'); drum(); setTimeout(sparks,300);
     setTimeout(function(){f.classList.remove('jump');busy=false},950); });
+})();
+</script>
+<script>
+/* 纸飞机：沿一道弧线飞出屏幕，落在随机一个 Demo */
+(function(){
+  var btn=document.getElementById('plane'); if(!btn) return;
+  var svgSrc=btn.querySelector('svg').outerHTML, busy=false;
+  function pick(){
+    var cards=[].slice.call(document.querySelectorAll('a.card[href^="demos/"]'));
+    var last=''; try{last=sessionStorage.getItem('planeLast')||''}catch(e){}
+    var pool=cards.filter(function(a){return a.getAttribute('href')!==last}); if(!pool.length) pool=cards;
+    var a=pool[Math.floor(Math.random()*pool.length)];
+    try{sessionStorage.setItem('planeLast',a.getAttribute('href'))}catch(e){}
+    var h=a.querySelector('h4'); return {href:a.getAttribute('href'),name:h?h.firstChild.textContent.trim():''};
+  }
+  btn.addEventListener('click',function(){
+    if(busy) return; busy=true;
+    var to=pick();
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){location.href=to.href;return}
+    var r=btn.getBoundingClientRect(), W=innerWidth, H=innerHeight, S=r.width;
+    var lay=document.createElement('div'); lay.className='flight'; lay.innerHTML=svgSrc+'<span class="dest">去「'+to.name+'」</span>';
+    document.body.appendChild(lay); btn.classList.add('gone');
+    var p=lay.querySelector('svg'), dest=lay.querySelector('.dest'); p.style.width=p.style.height=S+'px';
+    setTimeout(function(){dest.classList.add('show')},250);
+    // 三次贝塞尔：先往右上爬，绕一个小弯，再顺风滑出右上角
+    var P0=[r.left,r.top], P1=[W*.42,H*.30], P2=[W*.30,H*-.05], P3=[W+S*1.5,H*.12];
+    function bz(t,i){var u=1-t;return u*u*u*P0[i]+3*u*u*t*P1[i]+3*u*t*t*P2[i]+t*t*t*P3[i]}
+    function d(t,i){var u=1-t;return 3*u*u*(P1[i]-P0[i])+6*u*t*(P2[i]-P1[i])+3*t*t*(P3[i]-P2[i])}
+    var dur=1700, t0=performance.now(), lastDot=0, gone=false;
+    function step(now){
+      var k=Math.min(1,(now-t0)/dur), t=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+      var x=bz(t,0), y=bz(t,1), ang=Math.atan2(d(t,1),d(t,0))*180/Math.PI+22;
+      p.style.transform='translate('+x+'px,'+y+'px) rotate('+ang+'deg) scale('+(1+.25*Math.sin(Math.PI*t))+')';
+      if(now-lastDot>34){lastDot=now;var dot=document.createElement('i');dot.style.left=(x+S*.15)+'px';dot.style.top=(y+S*.55)+'px';lay.appendChild(dot)}
+      if(k<1) requestAnimationFrame(step); else if(!gone){gone=true;setTimeout(function(){location.href=to.href},120)}
+    }
+    requestAnimationFrame(step);
+  });
+  // 从 Demo 返回时（页面缓存）把纸飞机放回角落
+  addEventListener('pageshow',function(){busy=false;btn.classList.remove('gone');[].forEach.call(document.querySelectorAll('.flight'),function(n){n.remove()})});
 })();
 </script>
 </body>
