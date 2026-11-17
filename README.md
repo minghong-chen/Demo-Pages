@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="docs/assets/hero.webp" alt="风吹过的地方，藏着14个小世界" width="100%">
+<img src="docs/assets/hero.webp" alt="风吹过的地方，藏着15个小世界" width="100%">
 
 # 小&陈的 Demo 收藏夹 · 夏日画廊
 
-**风吹过的地方，藏着14个小世界。**
+**风吹过的地方，藏着15个小世界。**
 
 一间收藏交互式 Web Demo 的小屋。每一张卡片都是一个单文件页面，点开就能在浏览器里走进去。
 
@@ -14,11 +14,11 @@
 
 ---
 
-## 14个小世界
+## 15个小世界
 
 由不同 AI 写出的作品，按模型分成三章；作者不详的放在第四章。
 
-### 第一章 · Claude Fable 5.2 · 8个故事
+### 第一章 · Claude Fable 5.2 · 9个故事
 
 | Demo | 简介 |
 | --- | --- |
@@ -30,6 +30,7 @@
 | [羽毛 Feather](https://minghong-chen.github.io/Demo-Pages/demos/feather/) | 一只紫喉宝石蜂鸟停在青苔小枝上，上万片羽毛根根可见；会眨眼、抖羽、转头盯你，点一下撒颗种子它会去啄。 |
 | [步行大楼 Walking Block](https://minghong-chen.github.io/Demo-Pages/demos/walking-block/) | 一座长着八条机械腿的苏联板楼，在蓝色暮色的湿地旷野上缓缓行走；几何、纹理与着色器全由 three.js 程序化生成。 |
 | [萤光群岛 Lumen Isles](https://minghong-chen.github.io/Demo-Pages/demos/lumen-isles/) | 月夜里的一场飞行：群岛上长满会发光的蘑菇、棕榈和蕨，湖水、瀑布和藤蔓都泛着微光。 |
+| [隐藏层 Hidden Layers](https://minghong-chen.github.io/Demo-Pages/demos/hidden-layers/) | 一只飞不出温室的玻璃翼蝶，和它底下的六层。 |
 
 ### 第二章 · Claude Opus 5.5 · 2段骑行
 
@@ -78,7 +79,7 @@ python3 -m http.server 8000
 docs/
 ├── index.html      # 画廊首页（GitHub Pages 从 docs/ 发布）
 ├── assets/         # 首图、缩略图、动画与音效
-└── demos/          # 14个 Demo，每个一个文件夹
+└── demos/          # 15个 Demo，每个一个文件夹
 ```
 
 ## 致谢
