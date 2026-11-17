@@ -45,7 +45,7 @@ Demo 仓库里**一个文件夹 = 一个模型 = 网站上的一章**，文件�
 | `Claude Fable 5.2/Feather · 羽毛.html` | `docs/demos/feather/index.html`（旁边保留 `LICENSE.txt`，MIT） | `t-feather.webp` | 第一章 |
 | `Claude Fable 5.2/Walking Block · 步行大楼.html` | `docs/demos/walking-block/index.html` | `t-walking.webp` | 第一章 |
 | `Claude Fable 5.2/Lumen Isles · 萤光群岛.html` | `docs/demos/lumen-isles/index.html` | `t-lumen.webp` | 第一章 |
-| `Claude Fable 5.2/Hidden Layers · 隐藏层.html` | `docs/demos/hidden-layers/index.html` | `t-butterfly.webp` | 第一章 |
+| `Claude Fable 5.2/Butterfly · 蝴蝶.html` | `docs/demos/butterfly/index.html` | `t-butterfly.webp` | 第一章 |
 | `Claude Opus 5.5/Pelican Pedal Tales · 鹈鹕骑遇记.html` | `docs/demos/pelican-pedal-tales/index.html` | `t-pedal.webp` | 第二章 |
 | `Claude Opus 5.5/Summer Cycle · 夏日骑行.html` | `docs/demos/summer-cycle/index.html` | `t-summer.webp` | 第二章 |
 | `Deepseek-V4.1-Flash-1017/Wind Bell Bay · 风铃湾.html` | `docs/demos/wind-bell-bay/index.html` | `t-windbell.webp` | 第三章（Deepseek V4.1 Flash） |
