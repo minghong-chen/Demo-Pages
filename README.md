@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="docs/assets/hero.webp" alt="风吹过的地方，藏着16个小世界" width="100%">
+<img src="docs/assets/hero.webp" alt="风吹过的地方，藏着17个小世界" width="100%">
 
 # 小&陈的 Demo 收藏夹 · 夏日画廊
 
-**风吹过的地方，藏着16个小世界。**
+**风吹过的地方，藏着17个小世界。**
 
 一间收藏交互式 Web Demo 的小屋。每一张卡片都是一个单文件页面，点开就能在浏览器里走进去。
 
@@ -14,7 +14,7 @@
 
 ---
 
-## 16个小世界
+## 17个小世界
 
 由不同 AI 写出的作品，按模型分成四章；作者不详的放在第五章。
 
@@ -32,12 +32,13 @@
 | [萤光群岛 Lumen Isles](https://minghong-chen.github.io/Demo-Pages/demos/lumen-isles/) | 月夜里的一场飞行：群岛上长满会发光的蘑菇、棕榈和蕨，湖水、瀑布和藤蔓都泛着微光。 |
 | [蝴蝶 Butterfly](https://minghong-chen.github.io/Demo-Pages/demos/butterfly/) | 一只飞不出温室的玻璃翼蝶，和它底下的六层。 |
 
-### 第二章 · Claude Opus 5.5 · 2段骑行
+### 第二章 · Claude Opus 5.5 · 3段骑行
 
 | Demo | 简介 |
 | --- | --- |
 | [鹈鹕骑遇记 Pelican Pedal Tales](https://minghong-chen.github.io/Demo-Pages/demos/pelican-pedal-tales/) | 戴头盔、围红围巾的白鹈鹕沿海岸追鱼：IK 骨骼、布料围巾、Gerstner 海浪与昼夜循环。 |
 | [夏日骑行 Summer Cycle](https://minghong-chen.github.io/Demo-Pages/demos/summer-cycle/) | 夏日午后的公路骑行，风景像纸卷一样在眼前缓缓展开。 |
+| [双人单车 Built for Two](https://minghong-chen.github.io/Demo-Pages/demos/built-for-two/) | 一只老鹈鹕骑着双人自行车，把一生唱成一首华尔兹：从前和她并肩骑行，后来独自守着一枚蛋熬过风暴与长夜，黎明后带着雏鸟再次上路。歌声由声道物理模型逐采样合成，没有任何音频素材。 |
 
 ### 第三章 · Deepseek V4.1 Flash · 1座云上小镇
 
@@ -85,7 +86,7 @@ python3 -m http.server 8000
 docs/
 ├── index.html      # 画廊首页（GitHub Pages 从 docs/ 发布）
 ├── assets/         # 首图、缩略图、动画与音效
-└── demos/          # 16个 Demo，每个一个文件夹
+└── demos/          # 17个 Demo，每个一个文件夹
 ```
 
 ## 致谢

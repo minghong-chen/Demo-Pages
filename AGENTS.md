@@ -11,7 +11,7 @@
 - **配色**：沿用页面里的 CSS 变量（纸色 `--paper`、墨色 `--ink`、苔绿 `--moss`、屋顶红 `--roof` 等），不要引入冲突的新主色。
 - **质感**：纸张颗粒、拍立得式卡片加胶带、轻微倾斜、藤蔓分隔线、树叶光斑和飘叶，都是这个风格的一部分。
 - **动效**：轻柔、慢、像风吹过；不要炫技、闪烁或机械感的效果。
-- **文案**：温柔、有画面感的中文短句（如“风吹过的地方，藏着16个小世界”）。
+- **文案**：温柔、有画面感的中文短句（如“风吹过的地方，藏着17个小世界”）。
 
 拿不准一个改动是否合适时，就问自己：它放进一部吉卜力电影的夏日午后里会不会突兀。
 
@@ -48,6 +48,7 @@ Demo 仓库里**一个文件夹 = 一个模型 = 网站上的一章**，文件�
 | `Claude Fable 5.2/Butterfly · 蝴蝶.html` | `docs/demos/butterfly/index.html` | `t-butterfly.webp` | 第一章 |
 | `Claude Opus 5.5/Pelican Pedal Tales · 鹈鹕骑遇记.html` | `docs/demos/pelican-pedal-tales/index.html` | `t-pedal.webp` | 第二章 |
 | `Claude Opus 5.5/Summer Cycle · 夏日骑行.html` | `docs/demos/summer-cycle/index.html` | `t-summer.webp` | 第二章 |
+| `Claude Opus 5.5/Built for Two · 双人单车.html` | `docs/demos/built-for-two/index.html` | `t-two.webp` | 第二章 |
 | `Deepseek-V4.1-Flash-1017/Wind Bell Bay · 风铃湾.html` | `docs/demos/wind-bell-bay/index.html` | `t-windbell.webp` | 第三章（Deepseek V4.1 Flash） |
 | `Claude Opus 5.6/The Tea Ride · 茶旅.html` | `docs/demos/the-tea-ride/index.html` | `t-tearide.webp` | 第四章 |
 | `佚名/Earth Migration · 流浪地球.html` | `docs/demos/earth-migration/index.html` | `t-earth.webp` | 第五章（佚名之作） |
@@ -70,7 +71,7 @@ Demo 仓库里**一个文件夹 = 一个模型 = 网站上的一章**，文件�
 4. **删除案例**：删掉对应 demos 文件夹、缩略图和卡片；章节空了就整章和导航链接一起删。
 5. **内容变化**：重新复制覆盖即可；主角或场景变了时，按上面的风格重画缩略图。
 6. **更新所有数量**：
-   - 首屏标题 `藏着16个小世界` 里的数字（维护者要求用阿拉伯数字，2026-11-16）；
+   - 首屏标题 `藏着17个小世界` 里的数字（维护者要求用阿拉伯数字，2026-11-16）；
    - `data-count` 统计（案例数、模型数）；
    - 每章副标题（如“6个故事”，数字用阿拉伯数字）；
    - `README.md` 顶部标语、章节表格；
